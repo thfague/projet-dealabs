@@ -76,6 +76,12 @@ class Deal
      */
     private $dealsVote;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=DealRate::class, inversedBy="Deal")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $dealRates;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -250,6 +256,18 @@ class Deal
             $this->dealsVote->removeElement($dealsVote);
             $dealsVote->removeDealsVote($this);
         }
+
+        return $this;
+    }
+
+    public function getDealRates(): ?DealRate
+    {
+        return $this->dealRates;
+    }
+
+    public function setDealRates(?DealRate $dealRates): self
+    {
+        $this->dealRates = $dealRates;
 
         return $this;
     }

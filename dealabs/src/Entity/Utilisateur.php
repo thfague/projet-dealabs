@@ -49,6 +49,12 @@ class Utilisateur
      */
     private $dealsVote;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=DealRate::class, inversedBy="Utilisateur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $dealRates;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -181,6 +187,18 @@ class Utilisateur
         if ($this->dealsVote->contains($dealsVote)) {
             $this->dealsVote->removeElement($dealsVote);
         }
+
+        return $this;
+    }
+
+    public function getDealRates(): ?DealRate
+    {
+        return $this->dealRates;
+    }
+
+    public function setDealRates(?DealRate $dealRates): self
+    {
+        $this->dealRates = $dealRates;
 
         return $this;
     }
