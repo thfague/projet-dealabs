@@ -176,3 +176,5 @@ fabric.properties
 /web/js/
 
 # End of https://www.gitignore.io/api/symfony,composer,phpstorm
+
+/node_modules/
