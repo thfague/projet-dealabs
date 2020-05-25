@@ -1,6 +1,14 @@
 {% extends "base.html.twig" %}
 {% block body %}
     <div class="container">
-        <h1>Test</h1>
+        <h1>Deals</h1>
+        <ul>
+            {% for deal in deals %}
+                <li>
+                    {{ deal.nom }}
+                    {{ deal.description }}
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}

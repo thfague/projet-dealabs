@@ -20,16 +20,6 @@ class DealRate
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Deal::class, mappedBy="DealRates")
-     */
-    private $deal;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Utilisateur::class, mappedBy="dealRates")
-     */
-    private $utilisateur;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $date;
@@ -38,6 +28,18 @@ class DealRate
      * @ORM\Column(type="integer")
      */
     private $rate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="dealRates")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $utilisateur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Deal::class, inversedBy="dealRates")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $deal;
 
     public function __construct()
     {
@@ -132,6 +134,20 @@ class DealRate
     public function setRate(int $rate): self
     {
         $this->rate = $rate;
+
+        return $this;
+    }
+
+    public function setUtilisateur(?Utilisateur $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    public function setDeal(?Deal $deal): self
+    {
+        $this->deal = $deal;
 
         return $this;
     }

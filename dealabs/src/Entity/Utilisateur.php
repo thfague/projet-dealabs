@@ -51,8 +51,7 @@ class Utilisateur implements UserInterface
     private $dealsVote;
 
     /**
-     * @ORM\ManyToOne(targetEntity=DealRate::class, inversedBy="Utilisateur")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=DealRate::class, mappedBy="utilisateur")
      */
     private $dealRates;
 
@@ -61,6 +60,7 @@ class Utilisateur implements UserInterface
         $this->commentaires = new ArrayCollection();
         $this->dealsCreated = new ArrayCollection();
         $this->dealsVote = new ArrayCollection();
+        $this->dealRates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -267,5 +267,28 @@ class Utilisateur implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function addDealRate(DealRate $dealRate): self
+    {
+        if (!$this->dealRates->contains($dealRate)) {
+            $this->dealRates[] = $dealRate;
+            $dealRate->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDealRate(DealRate $dealRate): self
+    {
+        if ($this->dealRates->contains($dealRate)) {
+            $this->dealRates->removeElement($dealRate);
+            // set the owning side to null (unless already changed)
+            if ($dealRate->getUtilisateur() === $this) {
+                $dealRate->setUtilisateur(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -83,10 +83,6 @@
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/service-contracts" />
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/serializer-pack" />
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/serializer" />
-      <path value="$PROJECT_DIR$/dealabs/vendor/symfony/security-http" />
-      <path value="$PROJECT_DIR$/dealabs/vendor/symfony/security-guard" />
-      <path value="$PROJECT_DIR$/dealabs/vendor/symfony/security-csrf" />
-      <path value="$PROJECT_DIR$/dealabs/vendor/symfony/security-core" />
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/security-bundle" />
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/routing" />
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/property-info" />
@@ -106,6 +102,8 @@
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/mime" />
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/maker-bundle" />
       <path value="$PROJECT_DIR$/dealabs/vendor/symfony/mailer" />
+      <path value="$PROJECT_DIR$/dealabs/vendor/symfony/webpack-encore-bundle" />
+      <path value="$PROJECT_DIR$/dealabs/vendor/symfony/security" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

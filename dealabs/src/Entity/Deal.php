@@ -77,15 +77,20 @@ class Deal
     private $dealsVote;
 
     /**
-     * @ORM\ManyToOne(targetEntity=DealRate::class, inversedBy="Deal")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=DealRate::class, mappedBy="deal")
      */
     private $dealRates;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->dealsVote = new ArrayCollection();
+        $this->dealRates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -268,6 +273,41 @@ class Deal
     public function setDealRates(?DealRate $dealRates): self
     {
         $this->dealRates = $dealRates;
+
+        return $this;
+    }
+
+    public function addDealRate(DealRate $dealRate): self
+    {
+        if (!$this->dealRates->contains($dealRate)) {
+            $this->dealRates[] = $dealRate;
+            $dealRate->setDeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDealRate(DealRate $dealRate): self
+    {
+        if ($this->dealRates->contains($dealRate)) {
+            $this->dealRates->removeElement($dealRate);
+            // set the owning side to null (unless already changed)
+            if ($dealRate->getDeal() === $this) {
+                $dealRate->setDeal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
 
         return $this;
     }
