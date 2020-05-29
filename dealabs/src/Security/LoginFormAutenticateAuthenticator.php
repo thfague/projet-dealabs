@@ -18,9 +18,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAutenticateAuthenticator extends AbstractFormLoginAuthenticator
+class LoginFormAutenticateAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;
 
@@ -56,7 +57,8 @@ class LoginFormAutenticateAuthenticator extends AbstractFormLoginAuthenticator
             Security::LAST_USERNAME,
             $credentials['email']
         );
-
+        var_dump("get");
+        var_dump($credentials);
         return $credentials;
     }
 
@@ -73,12 +75,14 @@ class LoginFormAutenticateAuthenticator extends AbstractFormLoginAuthenticator
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
-
+        var_dump($credentials);
         return $user;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
+        var_dump("check: ");
+        var_dump($credentials);
         return $this->passwordEncoder->isPasswordValid($user, $credentials["mdp"]);
     }
 
@@ -88,11 +92,23 @@ class LoginFormAutenticateAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate(''));
+        return new RedirectResponse($this->urlGenerator->generate('app_deals_list'));
     }
 
     protected function getLoginUrl()
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    /**
+     * Returns the clear-text password contained in credentials if any.
+     *
+     * @param mixed $credentials The user credentials
+     */
+    public function getPassword($credentials): ?string
+    {
+        var_dump("mdp");
+        var_dump($credentials['mdp']);
+        return $credentials['mdp'];
     }
 }

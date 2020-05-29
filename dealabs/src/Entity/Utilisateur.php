@@ -123,10 +123,10 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
-    public function getMdp(): ?string
+    /*public function getMdp(): ?string
     {
         return $this->mdp;
-    }
+    }*/
 
     public function setMdp(string $mdp): self
     {
@@ -224,19 +224,6 @@ class Utilisateur implements UserInterface
     }
 
     /**
-     * Returns the password used to authenticate the user.
-     *
-     * This should be the encoded password. On authentication, a plain-text
-     * password will be salted, encoded, and then compared to this value.
-     *
-     * @return string|null The encoded password if any
-     */
-    public function getPassword()
-    {
-        // TODO: Implement getPassword() method.
-    }
-
-    /**
      * Returns the salt that was originally used to encode the password.
      *
      * This can return null if the password was not encoded using a salt.
@@ -290,5 +277,18 @@ class Utilisateur implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Returns the password used to authenticate the user.
+     *
+     * This should be the encoded password. On authentication, a plain-text
+     * password will be salted, encoded, and then compared to this value.
+     *
+     * @return string|null The encoded password if any
+     */
+    public function getPassword()
+    {
+        return $this->mdp;
     }
 }

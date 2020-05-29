@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,6 +19,7 @@ class RegisterController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder){
         $form = $this->createFormBuilder()->add('pseudo')
+            ->add('email', EmailType::class)
             ->add('mdp', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => true,
@@ -36,6 +38,7 @@ class RegisterController extends AbstractController
             $data = $form->getData();
             $user = new Utilisateur();
             $user->setPseudo($data['pseudo']);
+            $user->setEmail($data['email']);
             $user->setMdp(
                 $passwordEncoder->encodePassword($user, $data['mdp'])
             );
