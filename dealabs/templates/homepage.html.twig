@@ -1,14 +1,30 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    <div class="container">
-        <h1>Deals</h1>
-        <ul>
-            {% for deal in deals %}
-                <li>
-                    {{ deal.nom }}
-                    {{ deal.description }}
-                </li>
-            {% endfor %}
-        </ul>
+    <div style="background-color: #E9EAED;">
+        <div class="container" style="padding: 5% 0;">
+            <ul>
+                {% for deal in deals %}
+                    <li class="deals-list">
+                        <div>
+                            <div style="display: inline-flex; width: 100%;">
+                                <p class="deals-note">{{ deal.note }}°</p>
+                                <p class="deals-date">{{ deal.datepublication|date("d/m/Y") }}</p>
+                            </div>
+                            <p class="deals-nom">{{ deal.nom }}</p>
+                            <div style="display: inline-flex;">
+                                <p class="deals-prix">{{ deal.prix }}€</p>
+                                <p class="deals-prixhab">{{ deal.prixhab }}€</p>
+                                {% if deal.fdp == 0 %}
+                                    <p class="deals-fdp">Gratuit</p>
+                                {% else %}
+                                    <p class="deals-fdp">{{ deal.fdp }}€</p>
+                                {% endif %}
+                            </div>
+                            <p>{{ deal.description }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}
