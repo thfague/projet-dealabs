@@ -6,11 +6,12 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
-class Utilisateur
+class Utilisateur implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -18,6 +19,11 @@ class Utilisateur
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="auteur")
+     */
+    private $commentaires;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -35,36 +41,62 @@ class Utilisateur
     private $mdp;
 
     /**
-     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="auteur")
+     * @ORM\OneToMany(targetEntity=Deal::class, mappedBy="auteur")
      */
-    private $commentaires;
+    private $dealsCreated;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Deal::class, inversedBy="dealsVote")
+     */
+    private $dealsVote;
 
     /**
      * @ORM\OneToMany(targetEntity=DealRate::class, mappedBy="utilisateur")
      */
     private $dealRates;
 
-    /**
-     * @ORM\OneToMany(targetEntity=CodePromo::class, mappedBy="auteur")
-     */
-    private $codePromos;
-
-    /**
-     * @ORM\OneToMany(targetEntity=BonPlan::class, mappedBy="auteur")
-     */
-    private $bonPlans;
-
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->dealsCreated = new ArrayCollection();
+        $this->dealsVote = new ArrayCollection();
         $this->dealRates = new ArrayCollection();
-        $this->codePromos = new ArrayCollection();
-        $this->bonPlans = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection|Commentaire[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setAuteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->contains($commentaire)) {
+            $this->commentaires->removeElement($commentaire);
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getAuteur() === $this) {
+                $commentaire->setAuteur(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getPseudo(): ?string
@@ -104,30 +136,30 @@ class Utilisateur
     }
 
     /**
-     * @return Collection|Commentaire[]
+     * @return Collection|Deal[]
      */
-    public function getCommentaires(): Collection
+    public function getDealsCreated(): Collection
     {
-        return $this->commentaires;
+        return $this->dealsCreated;
     }
 
-    public function addCommentaire(Commentaire $commentaire): self
+    public function addDealsCreated(Deal $dealsCreated): self
     {
-        if (!$this->commentaires->contains($commentaire)) {
-            $this->commentaires[] = $commentaire;
-            $commentaire->setAuteur($this);
+        if (!$this->dealsCreated->contains($dealsCreated)) {
+            $this->dealsCreated[] = $dealsCreated;
+            $dealsCreated->setAuteur($this);
         }
 
         return $this;
     }
 
-    public function removeCommentaire(Commentaire $commentaire): self
+    public function removeDealsCreated(Deal $dealsCreated): self
     {
-        if ($this->commentaires->contains($commentaire)) {
-            $this->commentaires->removeElement($commentaire);
+        if ($this->dealsCreated->contains($dealsCreated)) {
+            $this->dealsCreated->removeElement($dealsCreated);
             // set the owning side to null (unless already changed)
-            if ($commentaire->getAuteur() === $this) {
-                $commentaire->setAuteur(null);
+            if ($dealsCreated->getAuteur() === $this) {
+                $dealsCreated->setAuteur(null);
             }
         }
 
@@ -135,11 +167,93 @@ class Utilisateur
     }
 
     /**
-     * @return Collection|DealRate[]
+     * @return Collection|Deal[]
      */
-    public function getDealRates(): Collection
+    public function getDealsVote(): Collection
+    {
+        return $this->dealsVote;
+    }
+
+    public function addDealsVote(Deal $dealsVote): self
+    {
+        if (!$this->dealsVote->contains($dealsVote)) {
+            $this->dealsVote[] = $dealsVote;
+        }
+
+        return $this;
+    }
+
+    public function removeDealsVote(Deal $dealsVote): self
+    {
+        if ($this->dealsVote->contains($dealsVote)) {
+            $this->dealsVote->removeElement($dealsVote);
+        }
+
+        return $this;
+    }
+
+    public function getDealRates(): ?DealRate
     {
         return $this->dealRates;
+    }
+
+    public function setDealRates(?DealRate $dealRates): self
+    {
+        $this->dealRates = $dealRates;
+
+        return $this;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     *     public function getRoles()
+     *     {
+     *         return ['ROLE_USER'];
+     *     }
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->pseudo;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 
     public function addDealRate(DealRate $dealRate): self
@@ -166,68 +280,6 @@ class Utilisateur
     }
 
     /**
-     * @return Collection|CodePromo[]
-     */
-    public function getCodePromos(): Collection
-    {
-        return $this->codePromos;
-    }
-
-    public function addCodePromo(CodePromo $codePromo): self
-    {
-        if (!$this->codePromos->contains($codePromo)) {
-            $this->codePromos[] = $codePromo;
-            $codePromo->setAuteur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCodePromo(CodePromo $codePromo): self
-    {
-        if ($this->codePromos->contains($codePromo)) {
-            $this->codePromos->removeElement($codePromo);
-            // set the owning side to null (unless already changed)
-            if ($codePromo->getAuteur() === $this) {
-                $codePromo->setAuteur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|BonPlan[]
-     */
-    public function getBonPlans(): Collection
-    {
-        return $this->bonPlans;
-    }
-
-    public function addBonPlan(BonPlan $bonPlan): self
-    {
-        if (!$this->bonPlans->contains($bonPlan)) {
-            $this->bonPlans[] = $bonPlan;
-            $bonPlan->setAuteur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBonPlan(BonPlan $bonPlan): self
-    {
-        if ($this->bonPlans->contains($bonPlan)) {
-            $this->bonPlans->removeElement($bonPlan);
-            // set the owning side to null (unless already changed)
-            if ($bonPlan->getAuteur() === $this) {
-                $bonPlan->setAuteur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Returns the password used to authenticate the user.
      *
      * This should be the encoded password. On authentication, a plain-text
@@ -238,57 +290,5 @@ class Utilisateur
     public function getPassword()
     {
         return $this->mdp;
-    }
-
-    /**
-     * Removes sensitive data from the user.
-     *
-     * This is important if, at any given point, sensitive information like
-     * the plain-text password is stored on this object.
-     */
-    public function eraseCredentials()
-    {
-        // TODO: Implement eraseCredentials() method.
-    }
-
-    /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
-    {
-        return $this->pseudo;
-    }
-
-    /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * This can return null if the password was not encoded using a salt.
-     *
-     * @return string|null The salt
-     */
-    public function getSalt()
-    {
-        // TODO: Implement getSalt() method.
-    }
-
-    /**
-     * Returns the roles granted to the user.
-     *
-     *     public function getRoles()
-     *     {
-     *         return ['ROLE_USER'];
-     *     }
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
-    public function getRoles()
-    {
-        return ['ROLE_USER'];
     }
 }

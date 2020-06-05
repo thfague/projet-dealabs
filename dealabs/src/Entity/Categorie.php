@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CategorieRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,20 +23,9 @@ class Categorie
     private $nom;
 
     /**
-     * @ORM\ManyToMany(targetEntity=CodePromo::class, inversedBy="categories")
+     * @ORM\ManyToOne(targetEntity=Deal::class, inversedBy="categories")
      */
-    private $codePromos;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=BonPlan::class, mappedBy="categories")
-     */
-    private $bonPlans;
-
-    public function __construct()
-    {
-        $this->codePromos = new ArrayCollection();
-        $this->bonPlans = new ArrayCollection();
-    }
+    private $deals;
 
     public function getId(): ?int
     {
@@ -57,56 +44,14 @@ class Categorie
         return $this;
     }
 
-    /**
-     * @return Collection|CodePromo[]
-     */
-    public function getCodePromos(): Collection
+    public function getDeals(): ?Deal
     {
-        return $this->codePromos;
+        return $this->deals;
     }
 
-    public function addCodePromo(CodePromo $codePromo): self
+    public function setDeals(?Deal $deals): self
     {
-        if (!$this->codePromos->contains($codePromo)) {
-            $this->codePromos[] = $codePromo;
-        }
-
-        return $this;
-    }
-
-    public function removeCodePromo(CodePromo $codePromo): self
-    {
-        if ($this->codePromos->contains($codePromo)) {
-            $this->codePromos->removeElement($codePromo);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|BonPlan[]
-     */
-    public function getBonPlans(): Collection
-    {
-        return $this->bonPlans;
-    }
-
-    public function addBonPlan(BonPlan $bonPlan): self
-    {
-        if (!$this->bonPlans->contains($bonPlan)) {
-            $this->bonPlans[] = $bonPlan;
-            $bonPlan->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBonPlan(BonPlan $bonPlan): self
-    {
-        if ($this->bonPlans->contains($bonPlan)) {
-            $this->bonPlans->removeElement($bonPlan);
-            $bonPlan->removeCategory($this);
-        }
+        $this->deals = $deals;
 
         return $this;
     }

@@ -29,6 +29,7 @@ class Commentaire
 
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="commentaires")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $auteur;
 
