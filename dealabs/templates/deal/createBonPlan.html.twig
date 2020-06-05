@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Créer un bon plan</h1>
+<form action="" method="post">
+    {{ form_errors(form) }}
+
+    {{ form_row(form.lien) }}
+    {{ form_row(form.prix) }}
+    {{ form_row(form.prixHab) }}
+    {{ form_row(form.fdp)  }}
+    {{ form_row(form.livraison) }}
+    {{ form_row(form.codePromo) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.categories) }}
+
+    {{ form_widget(form._token) }}
+    <input type="submit"/>
+</form>
+</body>
+</html>
