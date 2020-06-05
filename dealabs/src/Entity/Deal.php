@@ -86,6 +86,26 @@ class Deal
      */
     private $nom;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lien;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $typeReduc;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $valeurCodePromo;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $codePromo;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -308,6 +328,54 @@ class Deal
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getLien(): ?string
+    {
+        return $this->lien;
+    }
+
+    public function setLien(?string $lien): self
+    {
+        $this->lien = $lien;
+
+        return $this;
+    }
+
+    public function getTypeReduc(): ?int
+    {
+        return $this->typeReduc;
+    }
+
+    public function setTypeReduc(?int $typeReduc): self
+    {
+        $this->typeReduc = $typeReduc;
+
+        return $this;
+    }
+
+    public function getValeurCodePromo(): ?float
+    {
+        return $this->valeurCodePromo;
+    }
+
+    public function setValeurCodePromo(?float $valeurCodePromo): self
+    {
+        $this->valeurCodePromo = $valeurCodePromo;
+
+        return $this;
+    }
+
+    public function getCodePromo(): ?string
+    {
+        return $this->codePromo;
+    }
+
+    public function setCodePromo(?string $codePromo): self
+    {
+        $this->codePromo = $codePromo;
 
         return $this;
     }
