@@ -34,11 +34,11 @@ class DealController extends AbstractController
                 'No deal found for id '.$id
             );
         }
-        return $this->render('deal/bonplan/show.html.twig', ['deal' => $deal]);
+        return $this->render('bonplan/show.html.twig', ['deal' => $deal]);
     }
 
     /**
-     * @Route("/deal/createBonPlan", name="app_deal_createBonPlan")
+     * @Route("/create-bon-plan", name="app_deal_createBonPlan")
      */
     public function createBonPlan(Request $request){
         $bonPlan = new Deal();
@@ -59,7 +59,7 @@ class DealController extends AbstractController
             return $this->redirect($this->generateUrl('app_deals_list'));
         }
 
-        return $this->render('deal/createBonPlan.html.twig', [
+        return $this->render('bonplan/create.html.twig', [
             'form' => $form->createView(),
         ]);
     }
