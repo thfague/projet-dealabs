@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Deal;
 use App\Entity\DealType;
 use App\Form\Type\BonPlanType;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,6 +56,7 @@ class DealController extends AbstractController
 
     /**
      * @Route("/bons-plans/create", name="app_bonsplans_create")
+     * @throws \Exception
      */
     public function createBonPlan(Request $request){
         $bonPlan = new Deal();
@@ -67,7 +69,7 @@ class DealController extends AbstractController
         }
 
         $bonPlan->setNote(0);
-        $date = date("Y-m-d H:i:s");
+        $date = new DateTime('@'.strtotime('now'));
         $bonPlan->setDatePublication($date);
         $repository = $this->getDoctrine()->getRepository(DealType::class);
         $typeBonPlan = $repository->find(1);
