@@ -11,7 +11,7 @@
                                 <p class="deals-date">{{ deal.datepublication|date("d/m/Y") }}</p>
                             </div>
                             <p class="deals-nom">{{ deal.nom }}</p>
-                            <div style="display: inline-flex;">
+                            <div style="display: inline-flex; width: 100%;">
                                 <p class="deals-prix">{{ deal.prix }}€</p>
                                 <p class="deals-prixhab">{{ deal.prixhab }}€</p>
                                 {% if deal.fdp == 0 %}
@@ -19,10 +19,27 @@
                                 {% else %}
                                     <p class="deals-fdp">{{ deal.fdp }}€</p>
                                 {% endif %}
+                                {% if deal.type.id == 1 %}
+                                    <p class="deals-type">Bons plans</p>
+
+                                {% elseif deal.type.id == 2 %}
+                                    <p class="deals-type">Codes promo</p>
+
+                                {% endif %}
                             </div>
                             <p>{{ deal.description }}</p>
                             <p class="deals-pseudo">{{ deal.auteur.pseudo }}</p>
-                            <button type="button" class="btn btn-primary">Voir le deal</button>
+                            {% if deal.type.id == 1 %}
+                                <button type="button" class="btn btn-primary"
+                                        onclick="window.location.href='{{ path('app_bonplan_single', {id: deal.id}) }}'">
+                                    Voir le deal
+                                </button>
+                            {% elseif deal.type.id == 2 %}
+                                <button type="button" class="btn btn-primary"
+                                        onclick="window.location.href='{{ path('app_codepromo_single', {id: deal.id}) }}'">
+                                    Voir le deal
+                                </button>
+                            {% endif %}
                         </div>
                     </li>
                 {% endfor %}

@@ -45,20 +45,32 @@
 .deals-prix {
   color: red;
   font-weight: bold;
-  margin-right: 15%;
+  margin-right: 2%;
 }
 
 .deals-prixhab {
   color: #8F949B;
   text-decoration: line-through;
   font-weight: 500;
-  margin-right: 15%;
+  margin-right: 2%;
+}
+
+.deals-fdp, .deals-type {
+  color: #8F949B;
+  margin-right: 2%;
 }
 
 .deals-fdp {
-  color: #8F949B;
+  padding-right: 20px;
+  border-right: 1px #8F949B solid;
 }
 
 .deals-pseudo {
   font-weight: 600;
+}
+
+.single-bg {
+  background-color: white;
+  border-radius: 5px;
+  padding: 1rem 1rem;
 }

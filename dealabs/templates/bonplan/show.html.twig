@@ -1,9 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-<h1></h1>
-</body>
-</html>
+{% extends "base.html.twig" %}
+{% block body %}
+    <div style="background-color: #E9EAED; padding: 1% 0;">
+        <div class="container single-bg">
+            <p class="deals-note">{{ deal.note }}°</p>
+            <p class="deals-nom">{{ deal.nom }}</p>
+            <div style="display: inline-flex; width: 100%;">
+                <p class="deals-prix">{{ deal.prix }}€</p>
+                <p class="deals-prixhab">{{ deal.prixhab }}€</p>
+                {% if deal.fdp == 0 %}
+                    <p class="deals-fdp">Gratuit</p>
+                {% else %}
+                    <p class="deals-fdp">{{ deal.fdp }}€</p>
+                {% endif %}
+                {% if deal.type.id == 1 %}
+                    <p class="deals-type">Bons plans</p>
+
+                {% elseif deal.type.id == 2 %}
+                    <p class="deals-type">Codes promo</p>
+
+                {% endif %}
+            </div>
+            <p class="deals-pseudo">{{ deal.auteur.pseudo }}</p>
+        </div>
+    </div>
+{% endblock %}

@@ -3,5 +3,6 @@
   "build/app_css.css": "/build/app_css.css",
   "build/app_css.js": "/build/app_css.js",
   "build/runtime.js": "/build/runtime.js",
-  "build/vendors~app.js": "/build/vendors~app.js"
+  "build/vendors~app.js": "/build/vendors~app.js",
+  "build/images/logodealabs.png": "/build/images/logodealabs.3543261d.png"
 }
