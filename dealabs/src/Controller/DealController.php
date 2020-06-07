@@ -22,6 +22,22 @@ class DealController extends AbstractController
     }
 
     /**
+     * @Route("/bons-plans/{id}", name="app_single_bonplan")
+     */
+    public function singleBonPlan($id)
+    {
+        $deal = $this->getDoctrine()
+            ->getRepository(Deal::class)
+            ->find($id);
+        if(!$deal) {
+            throw $this->createNotFoundException(
+                'No deal found for id '.$id
+            );
+        }
+        return $this->render('deal/bonplan/show.html.twig', ['deal' => $deal]);
+    }
+
+    /**
      * @Route("/deal/createBonPlan", name="app_deal_createBonPlan")
      */
     public function createBonPlan(Request $request){
