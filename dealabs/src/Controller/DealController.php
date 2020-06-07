@@ -38,7 +38,6 @@ class DealController extends AbstractController
     }
 
     /**
-     * @Route("/bons-plans/create", name="app_bonsplans_create")
      * @Route("/codes-promo/{id}", name="app_codepromo_single", requirements={"id"="\d+"})
      */
     public function singleCodePromo(int $id)
@@ -53,6 +52,9 @@ class DealController extends AbstractController
         }
         return $this->render('codepromo/show.html.twig', ['deal' => $deal]);
     }
+
+    /**
+     * @Route("/bons-plans/create", name="app_bonsplans_create")
      */
     public function createBonPlan(Request $request){
         $bonPlan = new Deal();
