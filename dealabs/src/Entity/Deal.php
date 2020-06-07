@@ -20,11 +20,6 @@ class Deal
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Categorie::class, mappedBy="deals")
-     */
-    private $categories;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $prix;
@@ -106,6 +101,11 @@ class Deal
      */
     private $codePromo;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="deals")
+     */
+    private $categorie;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -116,37 +116,6 @@ class Deal
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|Categorie[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Categorie $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->setDeals($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Categorie $category): self
-    {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-            // set the owning side to null (unless already changed)
-            if ($category->getDeals() === $this) {
-                $category->setDeals(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getPrix(): ?float
@@ -376,6 +345,18 @@ class Deal
     public function setCodePromo(?string $codePromo): self
     {
         $this->codePromo = $codePromo;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

@@ -35,9 +35,10 @@ class CodePromoType extends AbstractType
             ->add("valeurCodePromo", MoneyType::class)
             ->add("nom", TextType::class)
             ->add("description", TextareaType::class)
-            ->add('category', EntityType::class, [
+            ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'name',
+                'choice_value' => 'id'
             ])
         ;
     }

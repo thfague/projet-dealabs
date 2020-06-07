@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,9 +25,14 @@ class Categorie
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Deal::class, inversedBy="categories")
+     * @ORM\OneToMany(targetEntity=Deal::class, mappedBy="categorie")
      */
     private $deals;
+
+    public function __construct()
+    {
+        $this->deals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -44,14 +51,33 @@ class Categorie
         return $this;
     }
 
-    public function getDeals(): ?Deal
+    /**
+     * @return Collection|Deal[]
+     */
+    public function getDeals(): Collection
     {
         return $this->deals;
     }
 
-    public function setDeals(?Deal $deals): self
+    public function addDeal(Deal $deal): self
     {
-        $this->deals = $deals;
+        if (!$this->deals->contains($deal)) {
+            $this->deals[] = $deal;
+            $deal->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeal(Deal $deal): self
+    {
+        if ($this->deals->contains($deal)) {
+            $this->deals->removeElement($deal);
+            // set the owning side to null (unless already changed)
+            if ($deal->getCategorie() === $this) {
+                $deal->setCategorie(null);
+            }
+        }
 
         return $this;
     }

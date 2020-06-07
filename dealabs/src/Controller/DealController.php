@@ -22,9 +22,9 @@ class DealController extends AbstractController
     }
 
     /**
-     * @Route("/bons-plans/{id}", name="app_single_bonplan")
+     *  @Route("/bons-plans/{id}", name="app_bonplan_single", requirements={"id"="\d+"})
      */
-    public function singleBonPlan($id)
+    public function singleBonPlan(int $id)
     {
         $deal = $this->getDoctrine()
             ->getRepository(Deal::class)
@@ -38,13 +38,24 @@ class DealController extends AbstractController
     }
 
     /**
-     * @Route("/create-bon-plan", name="app_deal_createBonPlan")
+     * @Route("/bons-plans/create", name="app_bonsplans_create")
      */
     public function createBonPlan(Request $request){
         $bonPlan = new Deal();
-        /*$repository = $this->getDoctrine()->getRepository(DealType::class);
-        $typeBonPlan = $repository->findBy(array('nom' => 'bon plan'));
-        $bonPlan->setType($typeBonPlan);*/
+        $user = $this->getUser();
+        if ($user == null){
+            return $this->redirect($this->generateUrl('app_login'));
+        }
+        else{
+            $bonPlan->setAuteur($user);
+        }
+
+        $bonPlan->setNote(0);
+        $date = date("Y-m-d H:i:s");
+        $bonPlan->setDatePublication($date);
+        $repository = $this->getDoctrine()->getRepository(DealType::class);
+        $typeBonPlan = $repository->find(1);
+        $bonPlan->setType($typeBonPlan);
         $form = $this->createForm(BonPlanType::class, $bonPlan);
         $form->handleRequest($request);
 

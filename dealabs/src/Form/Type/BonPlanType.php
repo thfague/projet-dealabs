@@ -30,9 +30,10 @@ class BonPlanType extends AbstractType
             ->add("codePromo", TextType::class)
             ->add("nom", TextType::class)
             ->add("description", TextareaType::class)
-            ->add('categories', EntityType::class, [
+            ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'nom',
+                'choice_value' => 'id'
             ])
         ;
     }
