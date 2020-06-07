@@ -106,11 +106,17 @@ class Deal
      */
     private $categorie;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="deal")
+     */
+    private $commentaires;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->dealsVote = new ArrayCollection();
         $this->dealRates = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -357,6 +363,37 @@ class Deal
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentaire[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setDeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->contains($commentaire)) {
+            $this->commentaires->removeElement($commentaire);
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getDeal() === $this) {
+                $commentaire->setDeal(null);
+            }
+        }
 
         return $this;
     }

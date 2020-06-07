@@ -33,6 +33,11 @@ class Commentaire
      */
     private $auteur;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Deal::class, inversedBy="commentaires")
+     */
+    private $deal;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +75,18 @@ class Commentaire
     public function setAuteur(?Utilisateur $auteur): self
     {
         $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    public function getDeal(): ?Deal
+    {
+        return $this->deal;
+    }
+
+    public function setDeal(?Deal $deal): self
+    {
+        $this->deal = $deal;
 
         return $this;
     }
