@@ -10,6 +10,7 @@ namespace App\Form\Type;
 
 
 use App\Entity\Categorie;
+use App\Entity\Deal;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -17,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CodePromoType extends AbstractType
 {
@@ -32,7 +34,7 @@ class CodePromoType extends AbstractType
                 ],
             ])
             ->add("codePromo", TextType::class)
-            ->add("valeurCodePromo", MoneyType::class)
+            ->add("valeurCodePromo", MoneyType::class, array('currency'=>''))
             ->add("nom", TextType::class)
             ->add("description", TextareaType::class)
             ->add('categorie', EntityType::class, [
@@ -41,5 +43,12 @@ class CodePromoType extends AbstractType
                 'choice_value' => 'id'
             ])
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Deal::class,
+        ]);
     }
 }

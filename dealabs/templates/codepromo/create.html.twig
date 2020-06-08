@@ -4,15 +4,36 @@
 <form action="" method="post">
     {{ form_errors(form) }}
 
-    {{ form_row(form.lien) }}
-    {{ form_row(form.typeReduc) }}
-    {{ form_row(form.codePromo) }}
-    {{ form_row(form.valeurCodePromo)  }}
-    {{ form_row(form.nom) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.categorie) }}
+    {{ form_label(form.lien, null, {'label': 'Lien du code promo', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.lien, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.typeReduc, null, {'label': 'Type de réduction', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.typeReduc, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.valeurCodePromo, null, {'label': 'Montant de la réduction', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.valeurCodePromo, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.codePromo, null, {'label': 'Code promo', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.codePromo, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.nom, null, {'label': 'Titre', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.description, null, {'label': 'Description', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.categorie, null, {'label': 'Catégorie', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+
 
     {{ form_widget(form._token) }}
     <input type="submit"/>
 </form>
+    <script>
+        function hideValeurCodePromo(){
+            var typeReduc = $("#code_promo_typeReduc").val();
+            console.log(typeReduc);
+
+        }
+
+        $(document).ready(function () {
+            $("#code_promo_typeReduc").bind("change", function () {
+                hideValeurCodePromo();
+            })
+        });
+    </script>
 {% endblock %}

@@ -4,15 +4,24 @@
 <form action="" method="post">
     {{ form_errors(form) }}
 
-    {{ form_row(form.lien) }}
-    {{ form_row(form.prix) }}
-    {{ form_row(form.prixHab) }}
-    {{ form_row(form.fdp)  }}
-    {{ form_row(form.livraison) }}
-    {{ form_row(form.codePromo) }}
-    {{ form_row(form.nom) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.categorie) }}
+    {{ form_label(form.lien, null, {'label': 'Lien du code promo', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.lien, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.prix, null, {'label': 'Prix', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.prixHab, null, {'label': 'Prix habituel', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.prixHab, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.fdp, null, {'label': 'Frais de port', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.fdp, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.livraison, null, {'label': 'Livraison gratuite', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.livraison, {'attr': {'class': 'col-sm-1 form-control'}}) }}
+    {{ form_label(form.codePromo, null, {'label': 'Code promo', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.codePromo, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.nom, null, {'label': 'Titre', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.description, null, {'label': 'Description', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.categorie, null, {'label': 'Catégorie', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
 
     {{ form_widget(form._token) }}
     <input type="submit"/>

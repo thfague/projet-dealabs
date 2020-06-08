@@ -9,6 +9,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Categorie;
+use App\Entity\Deal;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -16,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BonPlanType extends AbstractType
 {
@@ -23,9 +25,9 @@ class BonPlanType extends AbstractType
     {
         $builder
             ->add('lien', TextType::class)
-            ->add('prix', MoneyType::class)
-            ->add("prixHab", MoneyType::class)
-            ->add("fdp", MoneyType::class)
+            ->add('prix', MoneyType::class, array('currency'=>''))
+            ->add("prixHab", MoneyType::class, array('currency'=>''))
+            ->add("fdp", MoneyType::class, array('currency'=>''))
             ->add("livraison", CheckboxType::class)
             ->add("codePromo", TextType::class)
             ->add("nom", TextType::class)
@@ -36,5 +38,12 @@ class BonPlanType extends AbstractType
                 'choice_value' => 'id'
             ])
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Deal::class,
+        ]);
     }
 }
