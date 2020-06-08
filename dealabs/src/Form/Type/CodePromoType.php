@@ -23,7 +23,7 @@ class CodePromoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lien', TextType::class)
+            ->add("lien", TextType::class)
             ->add("typeReduc", ChoiceType::class, [
                 "choices" => [
                     "Pourcentage (%)" => 0,

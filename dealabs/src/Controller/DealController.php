@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Deal;
 use App\Entity\DealType;
 use App\Form\Type\BonPlanType;
+use App\Form\Type\CodePromoType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,6 +90,45 @@ class DealController extends AbstractController
         }
 
         return $this->render('bonplan/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/codes-promo/create", name="app_codePromo_create")
+     * @throws \Exception
+     */
+    public function createCodePromo(Request $request){
+        $codePromo = new Deal();
+        $user = $this->getUser();
+        if ($user == null){
+            return $this->redirect($this->generateUrl('app_login'));
+        }
+        else{
+            $codePromo->setAuteur($user);
+        }
+
+        $codePromo->setNote(0);
+        $date = new DateTime('@'.strtotime('now'));
+        $codePromo->setDatePublication($date);
+        $repository = $this->getDoctrine()->getRepository(DealType::class);
+        $typeCodePromo = $repository->find(2);
+        $codePromo->setType($typeCodePromo);
+        $form = $this->createForm(CodePromoType::class, $codePromo);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $codePromo = $form->getData();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($codePromo);
+            $manager->flush();
+
+            //à changer
+            return $this->redirect($this->generateUrl('app_deals_list'));
+        }
+
+        return $this->render('codepromo/create.html.twig', [
             'form' => $form->createView(),
         ]);
     }
