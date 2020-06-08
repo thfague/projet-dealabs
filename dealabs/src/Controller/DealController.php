@@ -19,7 +19,7 @@ class DealController extends AbstractController
     public function listDeals()
     {
         $repository = $this->getDoctrine()->getRepository(Deal::class);
-        $deals = $repository->findAll();
+        $deals = $repository->findAllDeals();
         return $this->render('homepage.html.twig', ['deals' => $deals]);
     }
 
@@ -30,7 +30,7 @@ class DealController extends AbstractController
     {
         $deal = $this->getDoctrine()
             ->getRepository(Deal::class)
-            ->find($id);
+            ->findDeal($id);
         if(!$deal) {
             throw $this->createNotFoundException(
                 'No deal found for id '.$id
@@ -52,7 +52,7 @@ class DealController extends AbstractController
                 'No deal found for id '.$id
             );
         }
-        return $this->render('codepromo/show.html.twig', ['deal' => $deal]);
+        return $this->render('codepromo/show.html.twig', ['deal' => $deal, 'commentaires' => $deal->getCommentaires()]);
     }
 
     /**

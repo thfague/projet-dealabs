@@ -25,10 +25,9 @@
             </button>
         </div>
         <div class="container single-bg" style="margin-top: 1%;">
-            <p>Commentaires:</p>
-            {% for commentaire in deal.commentaires %}
+            <p>Commentaires</p>
+            {% for commentaire in commentaires %}
                 <div>
-                    <p>{{ commentaire.auteur.pseudo }}</p>
                     <p>{{ commentaire.texte }}</p>
                 </div>
             {% endfor %}

@@ -19,6 +19,36 @@ class DealRepository extends ServiceEntityRepository
         parent::__construct($registry, Deal::class);
     }
 
+    /**
+     * Find deal by id.
+     * @return array
+     */
+    public function findDeal($id)
+    {
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d, c, u')
+            ->where('d.id = :id')
+            ->setParameter('id', $id)
+            ->join('d.commentaires', 'c')
+            ->join('d.auteur', 'u');
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * Find all deals.
+     *
+     * @return array
+     */
+    public function findAllDeals()
+    {
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d, u')
+            ->join('d.auteur', 'u');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Deal[] Returns an array of Deal objects
     //  */
