@@ -26,4 +26,22 @@
     {{ form_widget(form._token) }}
     <input type="submit"/>
 </form>
+    <script>
+        function disableFraisDePort(){
+            if ($("#bon_plan_livraison").is(":checked")){
+                $("#bon_plan_fdp").attr("disabled", "disabled");
+            }
+            else{
+                $("#bon_plan_fdp").removeAttr("disabled");
+            }
+        }
+
+        $(document).ready(function () {
+            disableFraisDePort();
+
+            $("#bon_plan_livraison").bind("change", function () {
+                disableFraisDePort();
+            })
+        });
+    </script>
 {% endblock %}
