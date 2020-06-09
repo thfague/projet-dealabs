@@ -4,6 +4,9 @@
 {% block body %}
     <div class="first-div-bg">
         <div class="container" style="padding: 5% 0;">
+            {% if deals|length == 0 %}
+                <h6>Aucun codes promo pour le moment</h6>
+            {% endif %}
             <ul>
                 {% for deal in deals %}
                     <li class="deals-list">

@@ -38,6 +38,17 @@
                         <p>{{ commentaire.texte }}</p>
                     </div>
                 {% endfor %}
+                <form action="" method="post">
+                    {{ form_errors(form) }}
+
+                    {{ form_widget(form.texte, {'attr': {'class': 'form-control'}}) }}
+
+                    {{ form_widget(form._token) }}
+
+                    <button class="btn btn-primary mt-3" type="submit">
+                        Poster
+                    </button>
+                </form>
             </div>
         </div>
     </div>

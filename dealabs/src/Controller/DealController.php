@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentaire;
 use App\Entity\Deal;
 use App\Entity\DealType;
 use App\Form\Type\BonPlanType;
 use App\Form\Type\CodePromoType;
+use App\Form\Type\CommentaireType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +48,7 @@ class DealController extends AbstractController
     /**
      * @Route("/bons-plans/{id}", name="app_bonplan_single", requirements={"id"="\d+"})
      */
-    public function singleBonPlan(int $id)
+    public function singleBonPlan(int $id, Request $request)
     {
         $deal = $this->getDoctrine()
             ->getRepository(Deal::class)
@@ -56,13 +58,34 @@ class DealController extends AbstractController
                 'No deal found for id '.$id
             );
         }
-        return $this->render('bonplan/show.html.twig', ['deal' => $deal]);
+        $commentaire = new Commentaire();
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $commentaire = $form->getData();
+            $user = $this->getUser();
+            if ($user == null){
+                return $this->redirect($this->generateUrl('app_login'));
+            }
+            else{
+                $commentaire->setAuteur($user);
+                $commentaire->setDeal($deal);
+                $date = new DateTime('@'.strtotime('now'));
+                $commentaire->setDatePublication($date);
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($commentaire);
+                $manager->flush();
+                return $this->redirect($this->generateUrl('app_codepromo_single', array('id' => $id)));
+            }
+        }
+        return $this->render('bonplan/show.html.twig', ['deal' => $deal, 'form' => $form->createView()]);
     }
 
     /**
      * @Route("/codes-promo/{id}", name="app_codepromo_single", requirements={"id"="\d+"})
      */
-    public function singleCodePromo(int $id)
+    public function singleCodePromo(int $id, Request $request)
     {
         $deal = $this->getDoctrine()
             ->getRepository(Deal::class)
@@ -72,7 +95,29 @@ class DealController extends AbstractController
                 'No deal found for id '.$id
             );
         }
-        return $this->render('codepromo/show.html.twig', ['deal' => $deal, 'commentaires' => $deal->getCommentaires()]);
+        $commentaire = new Commentaire();
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $commentaire = $form->getData();
+            $user = $this->getUser();
+            if ($user == null){
+                return $this->redirect($this->generateUrl('app_login'));
+            }
+            else{
+                $commentaire->setAuteur($user);
+                $commentaire->setDeal($deal);
+                $date = new DateTime('@'.strtotime('now'));
+                $commentaire->setDatePublication($date);
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($commentaire);
+                $manager->flush();
+                return $this->redirect($this->generateUrl('app_codepromo_single', array('id' => $id)));
+            }
+        }
+
+        return $this->render('codepromo/show.html.twig', ['deal' => $deal, 'commentaires' => $deal->getCommentaires(), 'form' => $form->createView()]);
     }
 
     /**
