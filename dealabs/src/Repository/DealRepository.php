@@ -22,14 +22,14 @@ class DealRepository extends ServiceEntityRepository
     /**
      * Find deal by id.
      * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findDeal($id)
     {
         $queryBuilder = $this->createQueryBuilder('d');
-        $queryBuilder->select('d, c, u')
+        $queryBuilder->select('d, u')
             ->where('d.id = :id')
             ->setParameter('id', $id)
-            ->join('d.commentaires', 'c')
             ->join('d.auteur', 'u');
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
