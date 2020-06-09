@@ -34,7 +34,7 @@ class CodePromoType extends AbstractType
                 ],
             ])
             ->add("codePromo", TextType::class)
-            ->add("valeurCodePromo", MoneyType::class, array('currency'=>''))
+            ->add("valeurCodePromo", MoneyType::class, array('currency'=>'', 'required' => false))
             ->add("nom", TextType::class)
             ->add("description", TextareaType::class)
             ->add('categorie', EntityType::class, [
