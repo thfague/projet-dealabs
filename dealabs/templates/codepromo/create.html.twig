@@ -1,36 +1,48 @@
 {% extends "base.html.twig" %}
+{% block title %}Dealabs - Créer un code promo{% endblock %}
+
 {% block body %}
-<h1>Créer un bon plan</h1>
-<form action="" method="post">
-    {{ form_errors(form) }}
+    <div class="row text-center">
+        <div class="col-xl-4"></div>
+        <div class="col-xl-4 mt-5">
+            <h3>Poster un nouveau code promo</h3>
+            <a href="{{ path('app_bonplan_create') }}" style="color: #03A5C1;">
+                <h4>ou poster un bon plan</h4>
+            </a>
+            <form action="" method="post">
+                {{ form_errors(form) }}
 
-    {{ form_label(form.lien, null, {'label': 'Lien du code promo', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    {{ form_widget(form.lien, {'attr': {'class': 'form-control'}}) }}
-    {{ form_label(form.typeReduc, null, {'label': 'Type de réduction', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    {{ form_widget(form.typeReduc, {'attr': {'class': 'form-control'}}) }}
-    {{ form_label(form.valeurCodePromo, null, {'label': 'Montant de la réduction', 'label_attr': {'class': 'col-sm-2 control-label', 'id' : 'labelValeurCodePromo'}}) }}
-    {{ form_widget(form.valeurCodePromo, {'attr': {'class': 'form-control'}}) }}
-    {{ form_label(form.codePromo, null, {'label': 'Code promo', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    {{ form_widget(form.codePromo, {'attr': {'class': 'form-control'}}) }}
-    {{ form_label(form.nom, null, {'label': 'Titre', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-    {{ form_label(form.description, null, {'label': 'Description', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-    {{ form_label(form.categorie, null, {'label': 'Catégorie', 'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                {{ form_label(form.lien, null, {'label': 'Lien du code promo', 'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.lien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_label(form.typeReduc, null, {'label': 'Type de réduction', 'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.typeReduc, {'attr': {'class': 'form-control'}}) }}
+                {{ form_label(form.valeurCodePromo, null, {'label': 'Montant de la réduction', 'label_attr': {'class': 'control-label', 'id' : 'labelValeurCodePromo'}}) }}
+                {{ form_widget(form.valeurCodePromo, {'attr': {'class': 'form-control'}}) }}
+                {{ form_label(form.codePromo, null, {'label': 'Code promo', 'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.codePromo, {'attr': {'class': 'form-control'}}) }}
+                {{ form_label(form.nom, null, {'label': 'Titre', 'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                {{ form_label(form.description, null, {'label': 'Description', 'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_label(form.categorie, null, {'label': 'Catégorie', 'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
 
+                {{ form_widget(form._token) }}
 
-    {{ form_widget(form._token) }}
-    <input type="submit"/>
-</form>
+                <button class="btn btn-primary mt-3" type="submit">
+                    Poster
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        function hideValeurCodePromo(){
+        function hideValeurCodePromo() {
             var typeReduc = $("#code_promo_typeReduc").val();
-            if (typeReduc == 2){
+            if (typeReduc == 2) {
                 $("#code_promo_valeurCodePromo").hide();
                 $("#labelValeurCodePromo").hide();
-            }
-            else{
+            } else {
                 $("#code_promo_valeurCodePromo").show();
                 $("#labelValeurCodePromo").show();
             }

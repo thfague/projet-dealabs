@@ -30,9 +30,15 @@
                         <input type="hidden" name="_csrf_token"
                                value="{{ csrf_token('authenticate') }}"
                         />
-                        <button class="btn btn-lg btn-primary mt-3" type="submit">
+                        <button type="submit" class="btn btn-lg btn-primary mt-3" type="submit">
                             Se connecter
                         </button>
+                        <p class="mt-5">Si vous n'avez pas de compte:</p>
+                        <a href="{{ path('app_register') }}">
+                            <button type="button" class="btn btn-lg btn-secondary">
+                                S'inscrire
+                            </button>
+                        </a>
                     </div>
                 </div>
             {% endif %}

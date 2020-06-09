@@ -28,8 +28,7 @@ class BonPlanType extends AbstractType
             ->add('prix', MoneyType::class, array('currency'=>''))
             ->add("prixHab", MoneyType::class, array('currency'=>''))
             ->add("fdp", MoneyType::class, array('currency'=>''))
-            ->add("livraison", CheckboxType::class)
-            ->add("codePromo", TextType::class)
+            ->add("livraison", CheckboxType::class, array('required' => false))
             ->add("nom", TextType::class)
             ->add("description", TextareaType::class)
             ->add('categorie', EntityType::class, [

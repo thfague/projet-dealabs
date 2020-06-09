@@ -1,4 +1,25 @@
 {% extends 'base.html.twig' %}
+{% block title %}Dealabs - Créer un compte{% endblock %}
+
 {% block body %}
-    {{ form(form) }}
+    <div class="row text-center">
+        <div class="col-xl-4"></div>
+        <div class="col-xl-4 mt-5">
+            <h1>Créer un compte</h1>
+            <form action="" method="post">
+                {{ form_errors(form) }}
+
+                {{ form_label(form.pseudo, null, {'label': 'Pseudo', 'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.pseudo, {'attr': {'class': 'form-control'}}) }}
+                {{ form_label(form.email, null, {'label': 'Email', 'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.mdp) }}
+
+                {{ form_widget(form._token) }}
+                <button class="btn btn-primary mt-3" type="submit">
+                    S'inscrire
+                </button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

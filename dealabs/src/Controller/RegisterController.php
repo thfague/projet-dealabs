@@ -15,26 +15,35 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegisterController extends AbstractController
 {
     /**
-     * @Route("/register", name="register")
+     * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder){
-        $form = $this->createFormBuilder()->add('pseudo')
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $form = $this->createFormBuilder()
+            ->add('pseudo', null, [
+                'required' => true,
+                'attr' => [
+                    'class' => 'text-center'
+                ]
+            ])
             ->add('email', EmailType::class)
             ->add('mdp', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => true,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Confirm password']
-            ])
-            ->add('register', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-success float-right'
-                ]
+                'first_options' => ['label' => 'Mot de passe',
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+                'second_options' => ['label' => 'Confirmer',
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]],
             ])
             ->getForm();
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             $data = $form->getData();
             $user = new Utilisateur();
             $user->setPseudo($data['pseudo']);
