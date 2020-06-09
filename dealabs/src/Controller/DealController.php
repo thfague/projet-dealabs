@@ -153,4 +153,24 @@ class DealController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/note/{dealId}/{valeur}", name="app_note")
+     */
+    public function noteDeal(int $dealId, int $valeur){
+        $user = $this->getUser();
+        if ($user == null){
+            return $this->redirect($this->generateUrl('app_login'));
+        }
+        else{
+            $repository = $this->getDoctrine()->getRepository(Deal::class);
+            $deal = new Deal();
+            $deal = $repository->find($dealId);
+            $deal->setNote($deal->getNote()+$valeur);
+            $manager = $this->getDoctrine()->getManager();
+            $manager->flush();
+            return $this->redirect($this->generateUrl('app_deals_list'));
+        }
+
+    }
+
 }

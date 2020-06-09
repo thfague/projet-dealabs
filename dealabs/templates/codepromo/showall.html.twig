@@ -6,7 +6,7 @@
                 {% for deal in deals %}
                     <li class="deals-list">
                         <div style="display: inline-flex; width: 100%;">
-                            <p class="deals-note">{{ deal.note }}°</p>
+                            <p class="deals-note"><a class="btn" href="{{ path('app_note', {'dealId': deal.id, "valeur": -1}) }}">-</a>{{ deal.note }}°<a class="btn" href="{{ path('app_note', {'dealId': deal.id, "valeur": 1}) }}">+</a></p>
                             <p class="deals-date">{{ deal.datepublication|date("d/m/Y") }}</p>
                         </div>
                         <a href="{{ path('app_codepromo_single', {id: deal.id}) }}">
