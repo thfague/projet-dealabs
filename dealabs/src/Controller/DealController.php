@@ -76,7 +76,7 @@ class DealController extends AbstractController
     }
 
     /**
-     * @Route("/bons-plans/create", name="app_bonsplans_create")
+     * @Route("/bons-plans/create", name="app_bonplan_create")
      * @throws \Exception
      */
     public function createBonPlan(Request $request){
@@ -115,7 +115,7 @@ class DealController extends AbstractController
     }
 
     /**
-     * @Route("/codes-promo/create", name="app_codePromo_create")
+     * @Route("/codes-promo/create", name="app_codepromo_create")
      * @throws \Exception
      */
     public function createCodePromo(Request $request){

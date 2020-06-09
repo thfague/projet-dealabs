@@ -2,7 +2,8 @@
     <a class="navbar-brand menu-color" href="/">
         <img style="width: 25%;" src="{{ asset('build/images/logodealabs.png') }}" alt="Dealabs_logo"/>
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -14,6 +15,25 @@
             <li class="nav-item">
                 <a class="nav-link menu-color" href="{{ path('app_codepromo_list') }}">Codes promo</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link menu-color" href="{{ path('app_bonplan_create') }}">Ajout bon plan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-color" href="{{ path('app_codepromo_create') }}">Ajout code promo</a>
+            </li>
+            {% if not app.user %}
+            <li class="nav-item">
+                <button type="button" class="btn btn-primary"
+                        onclick="window.location.href='{{ path('app_login') }}'">Se connecter
+                </button>
+            </li>
+            {% else %}
+                <li class="nav-item">
+                    <button type="button" class="btn btn-danger"
+                            onclick="window.location.href='{{ path('app_logout') }}'">Se déconnecter
+                    </button>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </header>
