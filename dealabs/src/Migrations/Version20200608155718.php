@@ -23,6 +23,8 @@ final class Version20200608155718 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE deal CHANGE prix prix DOUBLE PRECISION DEFAULT NULL, CHANGE fdp fdp DOUBLE PRECISION DEFAULT NULL, CHANGE livraison livraison TINYINT(1) DEFAULT NULL, CHANGE prix_hab prix_hab DOUBLE PRECISION DEFAULT NULL, CHANGE lien lien VARCHAR(1000) DEFAULT NULL');
+        $this->addSql('INSERT INTO deal_type (nom) VALUES("Bon plan")');
+        $this->addSql('INSERT INTO deal_type (nom) VALUES("Code promo")');
     }
 
     public function down(Schema $schema) : void
