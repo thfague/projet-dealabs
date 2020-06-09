@@ -16,7 +16,7 @@
 * ouvrir un terminal dans le projet et aller dans le dossier dealabs.  
 * taper les commandes suivantes : 
 
- ```composer install``` 
+ ```composer install```  
  ```yarn install```  
  ```yarn encore dev```  
 
