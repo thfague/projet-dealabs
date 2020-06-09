@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 
+a, a:hover {
+  color: black;
+}
+
 .navbar-color {
   background-color: #35373b;
 }
@@ -13,6 +17,11 @@
   color: white;
   opacity: 1;
   transition: 0.5s;
+}
+
+.first-div-bg {
+  background-color: #E9EAED;
+  padding: 1% 0;
 }
 
 .deals-list {
@@ -60,9 +69,9 @@
   margin-right: 2%;
 }
 
-.deals-fdp {
-  padding-right: 20px;
-  border-right: 1px #8F949B solid;
+.deals-type {
+  padding-left: 20px;
+  border-left: 1px #8F949B solid;
 }
 
 .deals-pseudo {
@@ -73,4 +82,8 @@
   background-color: white;
   border-radius: 5px;
   padding: 1rem 1rem;
+}
+
+.deal-commentaire {
+  border-bottom: 1px #C0C0C0 solid;
 }

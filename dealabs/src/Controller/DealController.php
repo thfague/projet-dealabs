@@ -24,6 +24,26 @@ class DealController extends AbstractController
     }
 
     /**
+     * @Route("/bons-plans", name="app_bonplan_list")
+     */
+    public function listBonsPlans()
+    {
+        $repository = $this->getDoctrine()->getRepository(Deal::class);
+        $deals = $repository->findAllBonsPlans();
+        return $this->render('bonplan/showall.html.twig', ['deals' => $deals]);
+    }
+
+    /**
+     * @Route("/codes-promo", name="app_codepromo_list")
+     */
+    public function listCodesPromo()
+    {
+        $repository = $this->getDoctrine()->getRepository(Deal::class);
+        $deals = $repository->findAllCodesPromo();
+        return $this->render('codepromo/showall.html.twig', ['deals' => $deals]);
+    }
+
+    /**
      * @Route("/bons-plans/{id}", name="app_bonplan_single", requirements={"id"="\d+"})
      */
     public function singleBonPlan(int $id)

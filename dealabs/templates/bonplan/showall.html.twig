@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="first-div-bg">
+        <div class="container" style="padding: 5% 0;">
+            <ul>
+                {% for deal in deals %}
+                    <li class="deals-list">
+                        <div style="display: inline-flex; width: 100%;">
+                            <p class="deals-note">{{ deal.note }}°</p>
+                            <p class="deals-date">{{ deal.datepublication|date("d/m/Y") }}</p>
+                        </div>
+                        <a href="{{ path('app_bonplan_single', {id: deal.id}) }}">
+                            <p class="deals-nom">{{ deal.nom }}</p>
+                        </a>
+                        <div style="display: inline-flex; width: 100%;">
+                            <p class="deals-prix">{{ deal.prix }}€</p>
+                            <p class="deals-prixhab">{{ deal.prixhab }}€</p>
+                            {% if deal.fdp == 0 %}
+                                <p class="deals-fdp">Gratuit</p>
+                            {% else %}
+                                <p class="deals-fdp">{{ deal.fdp }}€</p>
+                            {% endif %}
+                            <p class="deals-type">Bons plans</p>
+                        </div>
+                        <p>{{ deal.description }}</p>
+                        <p class="deals-pseudo">{{ deal.auteur.pseudo }}</p>
+                        <button type="button" class="btn btn-primary"
+                                onclick="window.location.href='{{ path('app_bonplan_single', {id: deal.id}) }}'">
+                            Voir le deal
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

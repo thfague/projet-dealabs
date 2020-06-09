@@ -1,36 +1,45 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    <div style="background-color: #E9EAED; padding: 1% 0;">
+    <div class="first-div-bg">
         <div class="container single-bg">
             <p class="deals-note">{{ deal.note }}°</p>
             <p class="deals-nom">{{ deal.nom }}</p>
             <div style="display: inline-flex; width: 100%;">
-                <p class="deals-prix">{{ deal.prix }}€</p>
-                <p class="deals-prixhab">{{ deal.prixhab }}€</p>
-                {% if deal.fdp == 0 %}
-                    <p class="deals-fdp">Gratuit</p>
-                {% else %}
-                    <p class="deals-fdp">{{ deal.fdp }}€</p>
+                {% if deal.typereduc == 0 %}
+                    <p class="deals-prix">-{{ deal.valeurcodepromo }}%</p>
+                {% elseif deal.typereduc == 1 %}
+                    <p class="deals-prix">-{{ deal.valeurcodepromo }}€</p>
+                {% elseif deal.typereduc == 2 %}
+                    <p class="deals-prix">Livraison gratuit</p>
                 {% endif %}
-                {% if deal.type.id == 1 %}
-                    <p class="deals-type">Bons plans</p>
-                {% elseif deal.type.id == 2 %}
-                    <p class="deals-type">Codes promo</p>
+                <p class="deals-type">Codes promo</p>
+            </div>
+            <div class="mb-3" style="display: inline-flex; width: 100%;">
+                {% if deal.lien != null %}
+                    <button type="button" class="btn btn-primary mr-3"
+                            onclick="window.location.href='{{ deal.lien }}'">
+                        Profiter du code
+                    </button>
                 {% endif %}
+                <p>Code: {{ deal.codepromo }}</p>
             </div>
             <p class="deals-pseudo">{{ deal.auteur.pseudo }}</p>
-            <button type="button" class="btn btn-primary" style=""
-                    onclick="window.location.href='{{ deal.lien }}'">
-                Voir le deal
-            </button>
+            <p>{{ deal.datepublication|date("d/m/Y") }}</p>
+            <p>{{ deal.description }}</p>
         </div>
-        <div class="container single-bg" style="margin-top: 1%;">
-            <p>Commentaires</p>
-            {% for commentaire in commentaires %}
-                <div>
-                    <p>{{ commentaire.texte }}</p>
-                </div>
-            {% endfor %}
+        <div class="container px-0 pb-0 single-bg" style="background-color: #35373b; margin-top: 1%;">
+            <p class="pl-3" style="color: white;">{{ deal.commentaires|length }} commentaire(s)</p>
+            <div style="background-color: white;">
+                {% for commentaire in deal.commentaires %}
+                    <div class="deal-commentaire pl-3 pt-2">
+                        <div style="display: inline-flex;">
+                            <p class="mr-3" style="font-weight: 500;">{{ commentaire.auteur.pseudo }}</p>
+                            <p>{{ commentaire.datepublication|date("d/m/Y") }}</p>
+                        </div>
+                        <p>{{ commentaire.texte }}</p>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

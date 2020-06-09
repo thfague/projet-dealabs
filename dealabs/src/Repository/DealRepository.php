@@ -49,32 +49,35 @@ class DealRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    // /**
-    //  * @return Deal[] Returns an array of Deal objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Find all bons plans.
+     *
+     * @return array
+     */
+    public function findAllBonsPlans()
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d, u')
+            ->where('d.type = :id')
+            ->setParameter('id', '1')
+            ->join('d.auteur', 'u');
 
-    /*
-    public function findOneBySomeField($value): ?Deal
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
+
+    /**
+     * Find all codes promo.
+     *
+     * @return array
+     */
+    public function findAllCodesPromo()
+    {
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d, u')
+            ->where('d.type = :id')
+            ->setParameter('id', '2')
+            ->join('d.auteur', 'u');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
