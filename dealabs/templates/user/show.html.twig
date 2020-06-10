@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="first-div-bg">
+        <div class="container single-bg">
+            <button type="button" class="btn btn-primary"
+                    onclick="window.location.href='{{ path('app_deals_saved') }}'">
+                Mes deals sauvegardés
+            </button>
+        </div>
+    </div>
+{% endblock %}
