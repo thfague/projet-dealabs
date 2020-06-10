@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Commentaire;
 use App\Entity\Deal;
 use App\Entity\DealType;
+use App\Entity\Utilisateur;
 use App\Form\Type\BonPlanType;
 use App\Form\Type\CodePromoType;
 use App\Form\Type\CommentaireType;
@@ -216,6 +217,40 @@ class DealController extends AbstractController
             return $this->redirect($this->generateUrl('app_deals_list'));
         }
 
+    }
+
+    /**
+     * @Route("/signaler/{dealId}/{userId}", name="app_signaler")
+     */
+    public function signaler(int $dealId, int $userId){
+        $deal = new Deal();
+        $repository = $this->getDoctrine()->getRepository(Deal::class);
+        $deal = $repository->find($dealId);
+        $utilisateur = new Utilisateur();
+        $criteriaUser = ["id", $userId];
+        $utilisateur = $this->getDoctrine()
+            ->getRepository(Utilisateur::class)
+            ->findBy($criteriaUser);
+        $admin = new Utilisateur();
+        $criteriaAdmin = ["role" => "ROLE_ADMIN"];
+        $admin = $this->getDoctrine()
+            ->getRepository(Utilisateur::class)
+            ->findBy($criteriaAdmin);
+        $transport = (new \Swift_SmtpTransport('localhost', 1025));
+        $mailer = new \Swift_Mailer($transport);
+        $message = (new \Swift_Message('Signalement deal'))
+            ->setFrom($utilisateur->getEmail())
+            ->setTo($admin->getEmail())
+            ->setBody("le deal suivant a été signalé ". $deal->getNom());
+
+        $result = $mailer->send($message);
+        $dealType = $deal->getType();
+        if ($dealType->getId() == 1){
+            $this->singleBonPlan($dealId, new Request());
+        }
+        else{
+            $this->singleCodePromo($dealId, new Request());
+        }
     }
 
 }

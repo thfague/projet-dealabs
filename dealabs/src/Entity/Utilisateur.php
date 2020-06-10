@@ -62,6 +62,11 @@ class Utilisateur implements UserInterface
      */
     private $dealsSaved;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $role;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -228,7 +233,7 @@ class Utilisateur implements UserInterface
      */
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     /**
@@ -322,6 +327,18 @@ class Utilisateur implements UserInterface
         if ($this->dealsSaved->contains($dealsSaved)) {
             $this->dealsSaved->removeElement($dealsSaved);
         }
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }
