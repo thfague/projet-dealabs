@@ -9,6 +9,8 @@ use App\Entity\Utilisateur;
 use App\Form\Type\BonPlanType;
 use App\Form\Type\CodePromoType;
 use App\Form\Type\CommentaireType;
+use App\Repository\DealRepository;
+use App\Repository\UtilisateurRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,7 +79,7 @@ class DealController extends AbstractController
                 $manager = $this->getDoctrine()->getManager();
                 $manager->persist($commentaire);
                 $manager->flush();
-                return $this->redirect($this->generateUrl('app_codepromo_single', array('id' => $id)));
+                return $this->redirect($this->generateUrl('app_bonplan_single', array('id' => $id)));
             }
         }
         return $this->render('bonplan/show.html.twig', ['deal' => $deal, 'form' => $form->createView()]);
@@ -220,36 +222,30 @@ class DealController extends AbstractController
     }
 
     /**
-     * @Route("/signaler/{dealId}/{userId}", name="app_signaler")
+     * @Route("/signaler/{dealId}", name="app_signaler")
      */
-    public function signaler(int $dealId, int $userId){
+    public function signaler(DealRepository $dealRepository, UtilisateurRepository $utilisateurRepository, int $dealId){
+        $user = $this->getUser();
+        if ($user == null){
+            return $this->redirect($this->generateUrl('app_login'));
+        }
         $deal = new Deal();
-        $repository = $this->getDoctrine()->getRepository(Deal::class);
-        $deal = $repository->find($dealId);
-        $utilisateur = new Utilisateur();
-        $criteriaUser = ["id", $userId];
-        $utilisateur = $this->getDoctrine()
-            ->getRepository(Utilisateur::class)
-            ->findBy($criteriaUser);
+        $deal = $dealRepository->findDealAndDealTypeById($dealId);
         $admin = new Utilisateur();
-        $criteriaAdmin = ["role" => "ROLE_ADMIN"];
-        $admin = $this->getDoctrine()
-            ->getRepository(Utilisateur::class)
-            ->findBy($criteriaAdmin);
+        $admin = $utilisateurRepository->getAdmin();
         $transport = (new \Swift_SmtpTransport('localhost', 1025));
         $mailer = new \Swift_Mailer($transport);
         $message = (new \Swift_Message('Signalement deal'))
-            ->setFrom($utilisateur->getEmail())
+            ->setFrom($user->getEmail())
             ->setTo($admin->getEmail())
-            ->setBody("le deal suivant a été signalé ". $deal->getNom());
+            ->setBody("le deal suivant a été signalé " . $deal->getNom());
 
         $result = $mailer->send($message);
         $dealType = $deal->getType();
-        if ($dealType->getId() == 1){
-            $this->singleBonPlan($dealId, new Request());
-        }
-        else{
-            $this->singleCodePromo($dealId, new Request());
+        if ($dealType->getId() == 1) {
+            return $this->redirect($this->generateUrl('app_bonplan_single', array('id' => $dealId)));
+        } else {
+            return $this->redirect($this->generateUrl('app_codepromo_single', array('id' => $dealId)));
         }
     }
 

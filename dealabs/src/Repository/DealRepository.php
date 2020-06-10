@@ -36,6 +36,22 @@ class DealRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find deal by id and get DealType in Deal.
+     * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findDealAndDealTypeById($id) : ?Deal
+    {
+        $queryBuilder = $this->createQueryBuilder('deal');
+        $queryBuilder->select('deal, dealType')
+            ->where('deal.id = :id')
+            ->setParameter('id', $id)
+            ->join('deal.type', 'dealType');
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * Find all deals.
      *
      * @return array

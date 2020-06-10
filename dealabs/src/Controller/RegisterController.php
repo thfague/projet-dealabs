@@ -51,7 +51,7 @@ class RegisterController extends AbstractController
             $user->setMdp(
                 $passwordEncoder->encodePassword($user, $data['mdp'])
             );
-
+            $user->setRole($user->getRoles()[0]);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
