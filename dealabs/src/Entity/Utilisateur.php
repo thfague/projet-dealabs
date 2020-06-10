@@ -6,6 +6,7 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -55,12 +56,19 @@ class Utilisateur implements UserInterface
      */
     private $dealRates;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Deal::class, inversedBy="utilisateursSaved")
+     * @JoinTable(name="utilisateur_dealsaved")
+     */
+    private $dealsSaved;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
         $this->dealsCreated = new ArrayCollection();
         $this->dealsVote = new ArrayCollection();
         $this->dealRates = new ArrayCollection();
+        $this->dealsSaved = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -290,5 +298,31 @@ class Utilisateur implements UserInterface
     public function getPassword()
     {
         return $this->mdp;
+    }
+
+    /**
+     * @return Collection|Deal[]
+     */
+    public function getDealsSaved(): Collection
+    {
+        return $this->dealsSaved;
+    }
+
+    public function addDealsSaved(Deal $dealsSaved): self
+    {
+        if (!$this->dealsSaved->contains($dealsSaved)) {
+            $this->dealsSaved[] = $dealsSaved;
+        }
+
+        return $this;
+    }
+
+    public function removeDealsSaved(Deal $dealsSaved): self
+    {
+        if ($this->dealsSaved->contains($dealsSaved)) {
+            $this->dealsSaved->removeElement($dealsSaved);
+        }
+
+        return $this;
     }
 }

@@ -6,6 +6,7 @@ use App\Repository\DealRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 
 /**
  * @ORM\Entity(repositoryClass=DealRepository::class)
@@ -111,12 +112,18 @@ class Deal
      */
     private $commentaires;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Utilisateur::class, mappedBy="dealsSaved")
+     */
+    private $utilisateursSaved;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->dealsVote = new ArrayCollection();
         $this->dealRates = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->utilisateursSaved = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -393,6 +400,34 @@ class Deal
             if ($commentaire->getDeal() === $this) {
                 $commentaire->setDeal(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Utilisateur[]
+     */
+    public function getUtilisateursSaved(): Collection
+    {
+        return $this->utilisateursSaved;
+    }
+
+    public function addUtilisateursSaved(Utilisateur $utilisateursSaved): self
+    {
+        if (!$this->utilisateursSaved->contains($utilisateursSaved)) {
+            $this->utilisateursSaved[] = $utilisateursSaved;
+            $utilisateursSaved->addDealsSaved($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateursSaved(Utilisateur $utilisateursSaved): self
+    {
+        if ($this->utilisateursSaved->contains($utilisateursSaved)) {
+            $this->utilisateursSaved->removeElement($utilisateursSaved);
+            $utilisateursSaved->removeDealsSaved($this);
         }
 
         return $this;
