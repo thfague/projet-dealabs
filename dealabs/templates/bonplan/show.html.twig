@@ -25,6 +25,9 @@
                     Voir le deal
                 </button>
             {% endif %}
+            <a href="{{ path('app_save_deal', {id: deal.id}) }}">
+                <p>Sauvegarder</p>
+            </a>
         </div>
         <div class="container px-0 pb-0 single-bg" style="background-color: #35373b; margin-top: 1%;">
             <p class="pl-3" style="color: white;">{{ deal.commentaires|length }} commentaire(s)</p>
