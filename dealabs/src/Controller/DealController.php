@@ -15,6 +15,7 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DealController extends AbstractController
 {
@@ -235,18 +236,31 @@ class DealController extends AbstractController
         $admin = $utilisateurRepository->getAdmin();
         $transport = (new \Swift_SmtpTransport('localhost', 1025));
         $mailer = new \Swift_Mailer($transport);
+        $dealType = $deal->getType();
+        if ($dealType->getId() == 1) {
+            $urlDealSignale = $this->generateUrl('app_bonplan_single', array('id' => $dealId),UrlGeneratorInterface::ABSOLUTE_URL);
+        } else {
+            $urlDealSignale = $this->generateUrl('app_codepromo_single', array('id' => $dealId), UrlGeneratorInterface::ABSOLUTE_URL);
+        }
         $message = (new \Swift_Message('Signalement deal'))
             ->setFrom($user->getEmail())
             ->setTo($admin->getEmail())
-            ->setBody("le deal suivant a été signalé " . $deal->getNom());
+            ->setBody(
+                $this->renderView(
+                // templates/emails/registration.html.twig
+                    'email/signalement.html.twig', [
+                        'urlDealSignale' => $urlDealSignale
+                    ]
+                ),
+                'text/html'
+            );
 
         $result = $mailer->send($message);
-        $dealType = $deal->getType();
         if ($dealType->getId() == 1) {
             return $this->redirect($this->generateUrl('app_bonplan_single', array('id' => $dealId)));
         } else {
             return $this->redirect($this->generateUrl('app_codepromo_single', array('id' => $dealId)));
         }
-    }
+}
 
 }
