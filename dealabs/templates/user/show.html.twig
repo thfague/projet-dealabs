@@ -2,10 +2,17 @@
 {% block body %}
     <div class="first-div-bg">
         <div class="container single-bg">
-            <button type="button" class="btn btn-primary"
-                    onclick="window.location.href='{{ path('app_deals_saved') }}'">
-                Mes deals sauvegardés
-            </button>
+            <p style="font-size: 20px;">{{ user.pseudo }}</p>
+            <div style="display: inline-flex">
+                <button type="button" class="btn btn-primary mr-3"
+                        onclick="window.location.href='{{ path('app_deals_saved') }}'">
+                    Deals sauvegardés
+                </button>
+                <button type="button" class="btn btn-primary"
+                        onclick="window.location.href='{{ path('app_deals_created') }}'">
+                    Mes deals
+                </button>
+            </div>
         </div>
     </div>
 {% endblock %}

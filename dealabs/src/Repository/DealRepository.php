@@ -96,4 +96,20 @@ class DealRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    /**
+     * Find deals created by use ID.
+     *
+     * @return array
+     */
+    public function findDealsByUserId($id)
+    {
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d, u')
+            ->where('d.auteur = :id')
+            ->setParameter('id', $id)
+            ->join('d.auteur', 'u');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

@@ -36,6 +36,7 @@
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/psr/link" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/sensio/framework-extra-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/swiftmailer/swiftmailer" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/asset" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/browser-kit" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/cache" />
@@ -89,6 +90,7 @@
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/serializer-pack" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/service-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/stopwatch" />
+      <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/swiftmailer-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/test-pack" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/translation" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/symfony/translation-contracts" />
