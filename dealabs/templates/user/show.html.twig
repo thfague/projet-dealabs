@@ -1,8 +1,7 @@
 {% extends "base.html.twig" %}
 {% block body %}
     <div class="first-div-bg">
-        <div class="container single-bg">
-            <p style="font-size: 20px;">{{ user.pseudo }}</p>
+        <div class="container">
             <div style="display: inline-flex">
                 <button type="button" class="btn btn-primary mr-3"
                         onclick="window.location.href='{{ path('app_deals_saved') }}'">
@@ -13,6 +12,21 @@
                     Mes deals
                 </button>
             </div>
+            <div class="single-bg my-3">
+                <h3 class="mb-5">Profil</h3>
+                <div class="mb-3">
+                    <span style="font-size: 20px;">Pseudo:</span>
+                    <span style="font-size: 20px; color: #36B7CD;">{{ user.pseudo }}</span>
+                </div>
+                <div class="mb-3">
+                    <span style="font-size: 20px;">Email:</span>
+                    <span style="font-size: 20px; color: #36B7CD;">{{ user.email }}</span>
+                </div>
+            </div>
+            <button type="button" class="btn btn-danger"
+                    onclick="window.location.href='{{ path('app_user_delete') }}'">
+                Supprimer mon compte
+            </button>
         </div>
     </div>
 {% endblock %}

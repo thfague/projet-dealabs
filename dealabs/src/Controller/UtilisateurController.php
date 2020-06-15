@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Deal;
 use App\Entity\Utilisateur;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -68,6 +69,26 @@ class UtilisateurController extends AbstractController
             $deals = $this->getDoctrine()->getRepository(Deal::class)->findDealsByUserId($userI);
             $user = $this->getDoctrine()->getRepository(Utilisateur::class)->find($userI);
             return $this->render('user/deal/showcreated.html.twig', ['deals' => $deals, 'user' => $user]);
+        }
+    }
+
+    /**
+     * @Route("/user/delete", name="app_user_delete")
+     */
+    public function deleteUser()
+    {
+        $userI = $this->getUser();
+        if ($userI == null) {
+            return $this->redirect($this->generateUrl('app_login'));
+        } else {
+            $user = $this->getDoctrine()->getRepository(Utilisateur::class)->find($userI);
+            $user->setPseudo('Anonyme');
+            $user->setEmail('');
+            $user->setMdp('');
+            $date = new DateTime('@' . strtotime('now'));
+            $user->setDeletedAt($date);
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirect($this->generateUrl('app_logout'));
         }
     }
 }
