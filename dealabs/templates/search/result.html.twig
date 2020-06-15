@@ -1,0 +1,77 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    {#<div class="first-div-bg">
+        <div class="container" style="padding: 5% 0;">
+            {% if deals|length == 0 %}
+                <h6>Aucun deals correspondant</h6>
+            {% endif %}
+            <ul>
+                {% for deal in deals %}
+                    {% if deal.type.id == 1 %}
+                        <li class="deals-list">
+                            <div style="display: inline-flex; width: 100%;">
+                                <p class="deals-note"><a class="btn" href="{{ path('app_note', {'dealId': deal.id, "valeur": -1}) }}">-</a>{{ deal.note }}°<a class="btn" href="{{ path('app_note', {'dealId': deal.id, "valeur": 1}) }}">+</a></p>
+                                <p class="deals-date">{{ deal.datepublication|date("d/m/Y") }}</p>
+                            </div>
+                            <a href="{{ path('app_bonplan_single', {id: deal.id}) }}">
+                                <p class="deals-nom">{{ deal.nom }}</p>
+                            </a>
+                            <div style="display: inline-flex; width: 100%;">
+                                <p class="deals-prix">{{ deal.prix }}€</p>
+                                <p class="deals-prixhab">{{ deal.prixhab }}€</p>
+                                {% if deal.fdp == 0 %}
+                                    <p class="deals-fdp">Gratuit</p>
+                                {% else %}
+                                    <p class="deals-fdp">{{ deal.fdp }}€</p>
+                                {% endif %}
+                                <p class="deals-type">Bons plans</p>
+                            </div>
+                            <p>{{ deal.description }}</p>
+                            <p class="deals-pseudo">{{ deal.auteur.pseudo }}</p>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="window.location.href='{{ path('app_bonplan_single', {id: deal.id}) }}'">
+                                Voir le deal
+                            </button>
+                        </li>
+                    {% elseif deal.type.id == 2 %}
+                        <li class="deals-list">
+                            <div style="display: inline-flex; width: 100%;">
+                                <p class="deals-note"><a class="btn" href="{{ path('app_note', {'dealId': deal.id, "valeur": -1}) }}">-</a>{{ deal.note }}°<a class="btn" href="{{ path('app_note', {'dealId': deal.id, "valeur": 1}) }}">+</a></p>
+                                <p class="deals-date">{{ deal.datepublication|date("d/m/Y") }}</p>
+                            </div>
+                            <a href="{{ path('app_codepromo_single', {id: deal.id}) }}">
+                                <p class="deals-nom">{{ deal.nom }}</p>
+                            </a>
+                            <div style="display: inline-flex; width: 100%;">
+                                {% if deal.typereduc == 0 %}
+                                    <p class="deals-prix">-{{ deal.valeurcodepromo }}%</p>
+                                {% elseif deal.typereduc == 1 %}
+                                    <p class="deals-prix">-{{ deal.valeurcodepromo }}€</p>
+                                {% elseif deal.typereduc == 2 %}
+                                    <p class="deals-prix">Livraison gratuite</p>
+                                {% endif %}
+                                <p class="deals-type">Codes promo</p>
+                            </div>
+                            <div class="mb-3" style="display: inline-flex; width: 100%;">
+                                {% if deal.lien != null %}
+                                    <button type="button" class="btn btn-primary mr-3"
+                                            onclick="window.location.href='{{ deal.lien }}'">
+                                        Profiter du code
+                                    </button>
+                                {% endif %}
+                                <p>Code: {{ deal.codepromo }}</p>
+                            </div>
+                            <p>{{ deal.description }}</p>
+                            <p class="deals-pseudo">{{ deal.auteur.pseudo }}</p>
+                            <button type="button" class="btn btn-secondary"
+                                    onclick="window.location.href='{{ path('app_codepromo_single', {id: deal.id}) }}'">
+                                Afficher plus
+                            </button>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>#}
+    <h1>Test</h1>
+{% endblock %}

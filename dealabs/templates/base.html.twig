@@ -15,7 +15,11 @@
     </head>
     <!--{{ dump() }}-->
     <body>
-    {% include "navbar.html.twig" %}
+    <div id="sidebar">
+        {{ render(controller(
+            'App\\Controller\\SearchController::rechercher'
+        )) }}
+    </div>
     {% block body %}{% endblock %}
         {% block javascripts %}
             {{ encore_entry_link_tags('app') }}

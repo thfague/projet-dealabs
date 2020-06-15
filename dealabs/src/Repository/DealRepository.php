@@ -112,4 +112,20 @@ class DealRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    /*public function searchByKeywords($criterias) {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.nom LIKE :criterias')
+            ->andWhere('d.description LIKE :criterias')
+            ->setParameter('criterias', '%'.$criterias.'%')
+            ->getQuery()
+            ->getResult();
+    }*/
+    public function searchByKeywords($criterias){
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->where('d.nom LIKE :criterias')
+            ->where('d.description LIKE :criterias')
+            ->setParameter('criterias', $criterias);
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

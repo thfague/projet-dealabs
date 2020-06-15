@@ -261,6 +261,5 @@ class DealController extends AbstractController
         } else {
             return $this->redirect($this->generateUrl('app_codepromo_single', array('id' => $dealId)));
         }
-}
-
+    }
 }
