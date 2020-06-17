@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Deal;
 use App\Entity\Utilisateur;
+use App\Repository\CommentaireRepository;
+use App\Repository\DealRepository;
+use App\Repository\UtilisateurRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -89,6 +92,27 @@ class UtilisateurController extends AbstractController
             $user->setDeletedAt($date);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirect($this->generateUrl('app_logout'));
+        }
+    }
+
+    /**
+     * @Route("/user/stats", name="app_deals_stats")
+     */
+    public function getStatistiques(UtilisateurRepository $utilisateurRepository, DealRepository $dealRepository, CommentaireRepository $commentaireRepository){
+        $userI = $this->getUser();
+        if ($userI == null){
+            return $this->redirect($this->generateUrl('app_login'));
+        }
+        else{
+            $user = $utilisateurRepository->find($userI);
+            $nbDealsPostes = $dealRepository->getNbDealsPostes($user->getId());
+            $nbCommentairesPostes = $commentaireRepository->getNbCommentairesPostes($user->getId());
+            $noteDealHot = $dealRepository->getRateHottestDeal($user->getId());
+            return $this->render('user/statistiques.html.twig', [
+                'nbDealsPostes' => $nbDealsPostes,
+                'nbCommentairesPostes' => $nbCommentairesPostes,
+                'noteDealHot' => $noteDealHot
+            ]);
         }
     }
 }

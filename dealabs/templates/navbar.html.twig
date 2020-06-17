@@ -37,7 +37,7 @@
                     </button>
                 </li>
             {% endif %}
-            <form action="" method="post">
+            <form action="{{ path('app_recherche') }}" method="post">
             {{ form_errors(form) }}
             {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
             <button class="btn btn-primary mt-3" type="submit">

@@ -47,4 +47,13 @@ class CommentaireRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getNbCommentairesPostes($userId) : int{
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->Select("count(c.id)")
+            ->where('c.auteur = :userId')
+            ->setParameter('userId', $userId);
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
+    }
 }

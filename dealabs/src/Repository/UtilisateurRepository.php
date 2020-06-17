@@ -28,4 +28,12 @@ class UtilisateurRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function searchByKeywords($criterias){
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->where('d.nom LIKE :criterias')
+            ->where('d.description LIKE :criterias')
+            ->setParameter('criterias', $criterias);
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

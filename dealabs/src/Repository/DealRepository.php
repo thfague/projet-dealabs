@@ -128,4 +128,22 @@ class DealRepository extends ServiceEntityRepository
             ->setParameter('criterias', $criterias);
         return $queryBuilder->getQuery()->getResult();
     }
+
+    public function getNbDealsPostes($userId) : int{
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->Select("count(d.id)")
+            ->where('d.auteur = :userId')
+            ->setParameter('userId', $userId);
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    public function getRateHottestDeal($userId){
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->Select("max(d.note)")
+            ->where('d.auteur = :userId')
+            ->setParameter('userId', $userId);
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
+    }
 }
