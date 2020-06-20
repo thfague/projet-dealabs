@@ -108,10 +108,12 @@ class UtilisateurController extends AbstractController
             $nbDealsPostes = $dealRepository->getNbDealsPostes($user->getId());
             $nbCommentairesPostes = $commentaireRepository->getNbCommentairesPostes($user->getId());
             $noteDealHot = $dealRepository->getRateHottestDeal($user->getId());
+            $moyNote = $dealRepository->getAverageRatesOneYear($user->getId());
             return $this->render('user/statistiques.html.twig', [
                 'nbDealsPostes' => $nbDealsPostes,
                 'nbCommentairesPostes' => $nbCommentairesPostes,
-                'noteDealHot' => $noteDealHot
+                'noteDealHot' => $noteDealHot,
+                'moyNote' => $moyNote
             ]);
         }
     }

@@ -146,4 +146,26 @@ class DealRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
+
+    public function getAverageRatesOneYear($userId){
+        $date = new \DateTime('- 1 year');
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->Select("avg(d.note)")
+            ->where('d.auteur = :userId')
+            ->andWhere('d.datePublication > :date ')
+            ->setParameter('userId', $userId)
+            ->setParameter('date', $date);
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    /*public function getPourcentHotDeals($userId){
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->Select("avg(d.note)")
+            ->where('d.auteur = :userId')
+            ->andWhere('d.datepublication < add_months( trunc(sysdate), -12*20 )')
+            ->setParameter('userId', $userId);
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
+    }*/
 }
