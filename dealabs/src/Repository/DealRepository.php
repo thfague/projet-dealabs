@@ -159,13 +159,13 @@ class DealRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    /*public function getPourcentHotDeals($userId){
+    public function getHotDeals($userId){
         $queryBuilder = $this->createQueryBuilder('d')
-            ->Select("avg(d.note)")
+            ->Select("count(d.id)")
             ->where('d.auteur = :userId')
-            ->andWhere('d.datepublication < add_months( trunc(sysdate), -12*20 )')
+            ->andWhere('d.note > 100')
             ->setParameter('userId', $userId);
 
         return $queryBuilder->getQuery()->getSingleScalarResult();
-    }*/
+    }
 }

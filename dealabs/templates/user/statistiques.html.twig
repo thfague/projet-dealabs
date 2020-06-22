@@ -2,10 +2,11 @@
 {% block body %}
     <div class="first-div-bg">
         <div class="container single-bg">
-            <p>nombre de deals postés : {{ nbDealsPostes }}</p>
-            <p>nombre de commentaires postés : {{ nbCommentairesPostes }}</p>
-            <p>note du deal le plus hot posté : {{ noteDealHot }}</p>
+            <p>Nombre de deals postés : {{ nbDealsPostes }}</p>
+            <p>Nombre de commentaires postés : {{ nbCommentairesPostes }}</p>
+            <p>Note du deal le plus hot posté : {{ noteDealHot }}</p>
             <p>Moyenne des notes des deals postés sur 1 an glissant : {{ moyNote }}</p>
+            <p>Pourcentage de deals postés devenus hot : {{ pourcentDealsHot }} %</p>
         </div>
     </div>
 {% endblock %}
