@@ -72,6 +72,11 @@ class Utilisateur implements UserInterface
      */
     private $deletedAt;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ParamAlerte::class, mappedBy="utilisateur", cascade={"persist", "remove"})
+     */
+    private $paramAlerte;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -356,6 +361,24 @@ class Utilisateur implements UserInterface
     public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getParamAlerte(): ?ParamAlerte
+    {
+        return $this->paramAlerte;
+    }
+
+    public function setParamAlerte(?ParamAlerte $paramAlerte): self
+    {
+        $this->paramAlerte = $paramAlerte;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUtilisateur = null === $paramAlerte ? null : $this;
+        if ($paramAlerte->getUtilisateur() !== $newUtilisateur) {
+            $paramAlerte->setUtilisateur($newUtilisateur);
+        }
 
         return $this;
     }
