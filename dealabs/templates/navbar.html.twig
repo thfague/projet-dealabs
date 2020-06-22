@@ -8,7 +8,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto" style="width: 100%;">
             <li class="nav-item active">
                 <a class="nav-link menu-color" href="{{ path('app_bonplan_list') }}">Bons plans</a>
             </li>
@@ -22,11 +22,11 @@
                 <a class="nav-link menu-color" href="{{ path('app_codepromo_create') }}">Ajout code promo</a>
             </li>
             {% if not app.user %}
-            <li class="nav-item">
-                <button type="button" class="btn btn-primary"
-                        onclick="window.location.href='{{ path('app_login') }}'">Se connecter
-                </button>
-            </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary"
+                            onclick="window.location.href='{{ path('app_login') }}'">Se connecter
+                    </button>
+                </li>
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link menu-color" href="{{ path('app_user_view') }}">Mon compte</a>
@@ -37,12 +37,12 @@
                     </button>
                 </li>
             {% endif %}
-            <form action="{{ path('app_recherche') }}" method="post">
-            {{ form_errors(form) }}
-            {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
-            <button class="btn btn-primary mt-3" type="submit">
-                Rechercher
-            </button>
+            <form action="{{ path('app_recherche') }}" method="post" style="display: inline-flex; margin-left: 5%;">
+                {{ form_errors(form) }}
+                {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+                <button class="btn btn-primary" type="submit">
+                    Rechercher
+                </button>
             </form>
         </ul>
     </div>
