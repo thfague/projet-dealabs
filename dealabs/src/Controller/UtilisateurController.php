@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Deal;
+use App\Entity\ParamAlerte;
 use App\Entity\Utilisateur;
+use App\Form\Type\ParamAlerteType;
 use App\Repository\CommentaireRepository;
 use App\Repository\DealRepository;
+use App\Repository\ParamAlerteRepository;
 use App\Repository\UtilisateurRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UtilisateurController extends AbstractController
@@ -119,5 +123,37 @@ class UtilisateurController extends AbstractController
                 'pourcentDealsHot' => $pourcent
             ]);
         }
+    }
+
+    /**
+     * @Route("/user/gestion-alertes", name="app_gestion_alertes")
+     */
+    public function gererAlerte(Request $request){
+        $paramAlerte = new ParamAlerte();
+        $user = $this->getUser();
+        if ($user == null){
+            return $this->redirect($this->generateUrl('app_login'));
+        }
+        else{
+            $paramAlerte->setUtilisateur($user);
+        }
+
+        $form = $this->createForm(ParamAlerteType::class, $paramAlerte);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $paramAlerte = $form->getData();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($paramAlerte);
+            $manager->flush();
+
+            //à changer
+            return $this->redirect($this->generateUrl('app_user_view'));
+        }
+
+        return $this->render('user/alertes/gestion.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
