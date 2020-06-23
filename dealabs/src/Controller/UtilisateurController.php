@@ -126,18 +126,19 @@ class UtilisateurController extends AbstractController
     }
 
     /**
-     * @Route("/user/gestion-alertes", name="app_gestion_alertes")
+     * @Route("/user/alertes/gestion", name="app_alertes_gestion")
      */
-    public function gererAlerte(Request $request){
-        $paramAlerte = new ParamAlerte();
+    public function gererAlerte(Request $request, ParamAlerteRepository $paramAlerteRepository){
         $user = $this->getUser();
         if ($user == null){
             return $this->redirect($this->generateUrl('app_login'));
         }
-        else{
+
+        $paramAlerte = $paramAlerteRepository->findByUserId($user->getId());
+        if($paramAlerte == null){
+            $paramAlerte = new ParamAlerte();
             $paramAlerte->setUtilisateur($user);
         }
-
         $form = $this->createForm(ParamAlerteType::class, $paramAlerte);
         $form->handleRequest($request);
 
@@ -155,5 +156,23 @@ class UtilisateurController extends AbstractController
         return $this->render('user/alertes/gestion.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/user/alertes", name="app_alertes")
+     */
+    public function  getFilAlertes(ParamAlerteRepository $paramAlerteRepository, DealRepository $dealRepository){
+        $user = $this->getUser();
+        if ($user == null){
+            return $this->redirect($this->generateUrl('app_login'));
+        }
+        else{
+            $paramAlerte = $paramAlerteRepository->findByUserId($user->getId());
+            $motsCles = explode("/", $paramAlerte->getMotsCles());
+            $deals = $dealRepository->getDealsByParamAlerte($motsCles, $paramAlerte->getNoteMin());
+            return $this->render('user/alertes/fil.html.twig',[
+                'deals' => $deals,
+                ]);
+        }
     }
 }

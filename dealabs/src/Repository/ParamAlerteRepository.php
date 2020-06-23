@@ -47,4 +47,15 @@ class ParamAlerteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByUserId($id): ?ParamAlerte
+    {
+        $queryBuilder = $this->createQueryBuilder('paramAlerte');
+        $queryBuilder->select('paramAlerte, u')
+            ->where('paramAlerte.utilisateur = :id')
+            ->setParameter('id', $id)
+            ->join('paramAlerte.utilisateur', 'u');
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
 }

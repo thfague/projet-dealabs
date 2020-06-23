@@ -168,4 +168,26 @@ class DealRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
+
+    //à vérifier ne fonctionne pas correctement
+    public function getDealsByParamAlerte($motsCles, $noteMin){
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->where('d.nom LIKE :criterias')
+            ->where('d.description LIKE :criterias')
+            ->setParameter('criterias', '%'.$motsCles[0].'%');
+        foreach ($motsCles as $mot){
+            if($mot == $motsCles[0]){
+                continue;
+            }
+
+            $queryBuilder->orWhere('d.nom LIKE :criterias')
+                ->orWhere('d.description LIKE :criterias')
+                ->setParameter('criterias', '%'.$mot.'%');
+        }
+
+        $queryBuilder->andWhere('d.note >= :noteMin')
+            ->setParameter('noteMin', $noteMin);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
