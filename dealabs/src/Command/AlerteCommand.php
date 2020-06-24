@@ -52,7 +52,7 @@ class AlerteCommand extends Command
             $paramAlerte = $paramAlerteRepository->findByUserId($user->getId());
             $motsCles = explode("/", $paramAlerte->getMotsCles());
             $deals = $dealRepository->getDealsByParamAlerte($motsCles, $paramAlerte->getNoteMin());
-            if (count($deals) == 0){
+            if (count($deals) == 0 || !$paramAlerte->getMail()){
                 continue;
             }
             $transport = (new \Swift_SmtpTransport('localhost', 1025));
