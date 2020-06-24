@@ -53,6 +53,7 @@ class Utilisateur implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=DealRate::class, mappedBy="utilisateur")
+     * @JoinTable(name="utilisateur_deal")
      */
     private $dealRates;
 

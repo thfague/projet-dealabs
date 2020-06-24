@@ -6,6 +6,7 @@ use App\Entity\Commentaire;
 use App\Entity\Deal;
 use App\Entity\DealType;
 use App\Entity\Utilisateur;
+use App\Event\UserVotedEvent;
 use App\Form\Type\BonPlanType;
 use App\Form\Type\CodePromoType;
 use App\Form\Type\CommentaireType;
@@ -13,12 +14,26 @@ use App\Repository\DealRepository;
 use App\Repository\UtilisateurRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DealController extends AbstractController
 {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * @Route("/", name="app_deals_list")
      */
@@ -206,15 +221,24 @@ class DealController extends AbstractController
      * @Route("/note/{dealId}/{valeur}", name="app_note")
      */
     public function noteDeal(int $dealId, int $valeur){
-        $user = $this->getUser();
-        if ($user == null){
+        $userI = $this->getUser();
+        if ($userI == null){
             return $this->redirect($this->generateUrl('app_login'));
         }
         else{
-            $repository = $this->getDoctrine()->getRepository(Deal::class);
-            $deal = new Deal();
-            $deal = $repository->find($dealId);
+            $dealRepository = $this->getDoctrine()->getRepository(Deal::class);
+            $deal = $dealRepository->find($dealId);
             $deal->setNote($deal->getNote()+$valeur);
+
+            $userRepository = $this->getDoctrine()->getRepository(Utilisateur::class);
+            $user = $userRepository->find($userI);
+            $user->addDealsSaved($deal);
+
+            if (!empty($this->eventDispatcher)) {
+                $event = new UserVotedEvent($user, $deal);
+                $this->eventDispatcher->dispatch($event);
+            }
+
             $manager = $this->getDoctrine()->getManager();
             $manager->flush();
             return $this->redirect($this->generateUrl('app_deals_list'));
