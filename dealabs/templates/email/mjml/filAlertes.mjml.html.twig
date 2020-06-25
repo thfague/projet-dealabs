@@ -1,0 +1,14 @@
+<mjml>
+    <mj-image width="100px" src="/assets/img/logo-small.png"></mj-image>
+    <mj-divider border-color="black"></mj-divider>
+    {% for deal in deals %}
+        <mj-body>
+            <mj-section border="2px black solid">
+                <mj-column>
+                    <mj-text align="center"><a href="{{ deal.lien }}">{{ deal.nom }}</a></mj-text>
+                    <mj-text align="center">{{ deal.note }}°</mj-text>
+                </mj-column>
+            </mj-section>
+        </mj-body>
+    {% endfor %}
+</mjml>
