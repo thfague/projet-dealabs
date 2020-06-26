@@ -48,12 +48,12 @@ class Utilisateur implements UserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity=Deal::class, inversedBy="dealsVote")
+     * @JoinTable(name="utilisateur_deal")
      */
     private $dealsVote;
 
     /**
      * @ORM\OneToMany(targetEntity=DealRate::class, mappedBy="utilisateur")
-     * @JoinTable(name="utilisateur_deal")
      */
     private $dealRates;
 
@@ -78,6 +78,11 @@ class Utilisateur implements UserInterface
      */
     private $paramAlerte;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=UserBadge::class, mappedBy="utilisateurs")
+     */
+    private $userBadges;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -85,6 +90,7 @@ class Utilisateur implements UserInterface
         $this->dealsVote = new ArrayCollection();
         $this->dealRates = new ArrayCollection();
         $this->dealsSaved = new ArrayCollection();
+        $this->userBadges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -379,6 +385,34 @@ class Utilisateur implements UserInterface
         $newUtilisateur = null === $paramAlerte ? null : $this;
         if ($paramAlerte->getUtilisateur() !== $newUtilisateur) {
             $paramAlerte->setUtilisateur($newUtilisateur);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserBadge[]
+     */
+    public function getUserBadges(): Collection
+    {
+        return $this->userBadges;
+    }
+
+    public function addUserBadge(UserBadge $userBadge): self
+    {
+        if (!$this->userBadges->contains($userBadge)) {
+            $this->userBadges[] = $userBadge;
+            $userBadge->addUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserBadge(UserBadge $userBadge): self
+    {
+        if ($this->userBadges->contains($userBadge)) {
+            $this->userBadges->removeElement($userBadge);
+            $userBadge->removeUtilisateur($this);
         }
 
         return $this;

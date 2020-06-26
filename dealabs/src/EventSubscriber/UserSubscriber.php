@@ -2,8 +2,6 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\Deal;
-use App\Entity\Utilisateur;
 use App\Event\UserVotedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,5 +25,7 @@ class UserSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
         $deal = $event->getDeal();
+        $user->addDealsVote($deal);
+
     }
 }
