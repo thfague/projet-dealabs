@@ -50,6 +50,9 @@ class AlerteCommand extends Command
         $admin = $utilisateurRepository->getAdmin();
         foreach ($users as $user){
             $paramAlerte = $paramAlerteRepository->findByUserId($user->getId());
+            if ($paramAlerte == null){
+                continue;
+            }
             $motsCles = explode("/", $paramAlerte->getMotsCles());
             $deals = $dealRepository->getDealsByParamAlerte($motsCles, $paramAlerte->getNoteMin());
             if (count($deals) == 0 || !$paramAlerte->getMail()){
