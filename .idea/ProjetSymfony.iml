@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/dealabs/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/cron/cron" />
+      <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/cron/cron-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/doctrine/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/doctrine/cache" />
       <excludeFolder url="file://$MODULE_DIR$/dealabs/vendor/doctrine/collections" />

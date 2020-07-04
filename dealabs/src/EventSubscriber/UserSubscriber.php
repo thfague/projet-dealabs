@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\UserBadge;
 use App\Event\UserVotedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,6 +27,8 @@ class UserSubscriber implements EventSubscriberInterface
         $user = $event->getUser();
         $deal = $event->getDeal();
         $user->addDealsVote($deal);
-
+        if(count($user->getDealsVote()) >= 10) {
+            $user->addUserBadge();
+        }
     }
 }
