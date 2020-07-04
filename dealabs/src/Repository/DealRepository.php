@@ -169,7 +169,6 @@ class DealRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    //à vérifier ne fonctionne pas correctement
     public function getDealsByParamAlerte($motsCles, $noteMin){
         $queryBuilder = $this->createQueryBuilder('d');
         foreach ($motsCles as $index => $mot){
@@ -180,6 +179,40 @@ class DealRepository extends ServiceEntityRepository
 
         $queryBuilder->andWhere('d.note >= :noteMin')
             ->setParameter('noteMin', $noteMin);
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findBonsPlansHot()
+    {
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d, u')
+            ->where('d.type = :id')
+            ->setParameter('id', '1')
+            ->join('d.auteur', 'u')
+            ->andWhere('d.note > 100');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findDealsHot()
+    {
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d, u')
+            ->join('d.auteur', 'u')
+            ->andWhere('d.note > 100');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findCodesPromoHot()
+    {
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d, u')
+            ->where('d.type = :id')
+            ->setParameter('id', '2')
+            ->join('d.auteur', 'u')
+            ->andWhere('d.note > 100');
+
         return $queryBuilder->getQuery()->getResult();
     }
 }

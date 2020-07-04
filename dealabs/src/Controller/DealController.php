@@ -286,4 +286,29 @@ class DealController extends AbstractController
             return $this->redirect($this->generateUrl('app_codepromo_single', array('id' => $dealId)));
         }
     }
+
+    /**
+     * @Route("/bons-plans/hot", name="app_bonsplans_hot")
+     */
+    public function bonsPlansHot(DealRepository $dealRepository){
+        $deals = $dealRepository->findBonsPlansHot();
+        return $this->render('bonplan/showall.html.twig', ['deals' => $deals]);
+    }
+
+    /**
+     * @Route("/hot", name="app_deals_hot")
+     */
+    public function accueilHot(DealRepository $dealRepository){
+        $deals = $dealRepository->findDealsHot();
+        return $this->render('homepage.html.twig', ['deals' => $deals]);
+    }
+
+    /**
+     * @Route("/codes-promo/hot", name="app_codepromo_hot")
+     */
+    public function codesPromoHot(DealRepository $dealRepository)
+    {
+        $deals = $dealRepository->findCodesPromoHot();
+        return $this->render('codepromo/showall.html.twig', ['deals' => $deals]);
+    }
 }

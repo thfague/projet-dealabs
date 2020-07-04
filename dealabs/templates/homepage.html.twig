@@ -1,7 +1,9 @@
 {% extends "base.html.twig" %}
 {% block body %}
+
     <div class="first-div-bg">
         <div class="container" style="padding: 5% 0;">
+            <a class="btn btn-primary" href="{{ path('app_deals_hot') }}">Hot</a>
             {% if deals|length == 0 %}
                 <h6>Aucun deals pour le moment</h6>
             {% endif %}
