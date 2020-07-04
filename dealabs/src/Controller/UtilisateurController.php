@@ -12,6 +12,7 @@ use App\Repository\ParamAlerteRepository;
 use App\Repository\UtilisateurRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -102,19 +103,19 @@ class UtilisateurController extends AbstractController
     /**
      * @Route("/user/stats", name="app_deals_stats")
      */
-    public function getStatistiques(UtilisateurRepository $utilisateurRepository, DealRepository $dealRepository, CommentaireRepository $commentaireRepository){
+    public function getStatistiques(UtilisateurRepository $utilisateurRepository, DealRepository $dealRepository, CommentaireRepository $commentaireRepository)
+    {
         $userI = $this->getUser();
-        if ($userI == null){
+        if ($userI == null) {
             return $this->redirect($this->generateUrl('app_login'));
-        }
-        else{
+        } else {
             $user = $utilisateurRepository->find($userI);
             $nbDealsPostes = $dealRepository->getNbDealsPostes($user->getId());
             $nbCommentairesPostes = $commentaireRepository->getNbCommentairesPostes($user->getId());
             $noteDealHot = $dealRepository->getRateHottestDeal($user->getId());
             $moyNote = $dealRepository->getAverageRatesOneYear($user->getId());
             $nbDealsHot = $dealRepository->getHotDeals($user->getId());
-            if($nbDealsPostes > 0) {
+            if ($nbDealsPostes > 0) {
                 $pourcent = $nbDealsHot / $nbDealsPostes * 100;
             } else {
                 $pourcent = 0;
@@ -132,22 +133,22 @@ class UtilisateurController extends AbstractController
     /**
      * @Route("/user/alertes/gestion", name="app_alertes_gestion")
      */
-    public function gererAlerte(Request $request, ParamAlerteRepository $paramAlerteRepository){
+    public function gererAlerte(Request $request, ParamAlerteRepository $paramAlerteRepository)
+    {
         $user = $this->getUser();
-        if ($user == null){
+        if ($user == null) {
             return $this->redirect($this->generateUrl('app_login'));
         }
 
         $paramAlerte = $paramAlerteRepository->findByUserId($user->getId());
-        if($paramAlerte == null){
+        if ($paramAlerte == null) {
             $paramAlerte = new ParamAlerte();
             $paramAlerte->setUtilisateur($user);
         }
         $form = $this->createForm(ParamAlerteType::class, $paramAlerte);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $paramAlerte = $form->getData();
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($paramAlerte);
@@ -165,18 +166,30 @@ class UtilisateurController extends AbstractController
     /**
      * @Route("/user/alertes", name="app_alertes")
      */
-    public function  getFilAlertes(ParamAlerteRepository $paramAlerteRepository, DealRepository $dealRepository){
+    public function getFilAlertes(ParamAlerteRepository $paramAlerteRepository, DealRepository $dealRepository)
+    {
         $user = $this->getUser();
-        if ($user == null){
+        if ($user == null) {
             return $this->redirect($this->generateUrl('app_login'));
-        }
-        else{
+        } else {
             $paramAlerte = $paramAlerteRepository->findByUserId($user->getId());
             $motsCles = explode("/", $paramAlerte->getMotsCles());
             $deals = $dealRepository->getDealsByParamAlerte($motsCles, $paramAlerte->getNoteMin());
-            return $this->render('user/alertes/fil.html.twig',[
+            return $this->render('user/alertes/fil.html.twig', [
                 'deals' => $deals,
-                ]);
+            ]);
         }
+    }
+
+    /**
+     * @Route("/user/badges", name="app_user_badges")
+     */
+    public function getUserBadges(UtilisateurRepository $utilisateurRepository)
+    {
+        $user = $this->getUser();
+
+        return $this->render('user/badges.html.twig', [
+            'user' => $user
+        ]);
     }
 }

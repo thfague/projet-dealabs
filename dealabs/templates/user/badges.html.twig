@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="first-div-bg">
+        <div class="container single-bg">
+            <h3 class="mb-5">Badges</h3>
+            {% if user.dealsVote|length >= 10 %}
+                <p>Surveillant (voter à 10 deals) : obtenu</p>
+            {% else %}
+                <p>Surveillant (voter à 10 deals) : {{ user.dealsVote|length }}/10</p>
+            {% endif %}
+            {% if user.dealsVote|length >= 10 %}
+                <p>Cobaye (créer 10 deals) : obtenu</p>
+            {% else %}
+                <p>Cobaye (créer 10 deals) : {{ user.dealsCreated|length }}/10</p>
+            {% endif %}
+            {% if user.commentaires|length >= 10 %}
+                <p>Rapport de stage (écrire 10 commentaires) : obtenu</p>
+            {% else %}
+                <p>Rapport de stage (écrire 10 commentaires) : {{ user.commentaires|length }}/10</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

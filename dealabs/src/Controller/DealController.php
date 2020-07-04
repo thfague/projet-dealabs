@@ -6,6 +6,8 @@ use App\Entity\Commentaire;
 use App\Entity\Deal;
 use App\Entity\DealType;
 use App\Entity\Utilisateur;
+use App\Event\UserCommentEvent;
+use App\Event\UserCreatedDealEvent;
 use App\Event\UserVotedEvent;
 use App\Form\Type\BonPlanType;
 use App\Form\Type\CodePromoType;
@@ -92,6 +94,10 @@ class DealController extends AbstractController
                 $commentaire->setDeal($deal);
                 $date = new DateTime('@'.strtotime('now'));
                 $commentaire->setDatePublication($date);
+                if (!empty($this->eventDispatcher)) {
+                    $event = new UserCommentEvent($user, $commentaire);
+                    $this->eventDispatcher->dispatch($event);
+                }
                 $manager = $this->getDoctrine()->getManager();
                 $manager->persist($commentaire);
                 $manager->flush();
@@ -129,9 +135,16 @@ class DealController extends AbstractController
                 $commentaire->setDeal($deal);
                 $date = new DateTime('@'.strtotime('now'));
                 $commentaire->setDatePublication($date);
+
+                if (!empty($this->eventDispatcher)) {
+                    $event = new UserCommentEvent($user, $commentaire);
+                    $this->eventDispatcher->dispatch($event);
+                }
+
                 $manager = $this->getDoctrine()->getManager();
                 $manager->persist($commentaire);
                 $manager->flush();
+
                 return $this->redirect($this->generateUrl('app_codepromo_single', array('id' => $id)));
             }
         }
@@ -165,6 +178,10 @@ class DealController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $bonPlan = $form->getData();
+            if (!empty($this->eventDispatcher)) {
+                $event = new UserCreatedDealEvent($user, $bonPlan);
+                $this->eventDispatcher->dispatch($event);
+            }
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($bonPlan);
             $manager->flush();
@@ -204,6 +221,10 @@ class DealController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $codePromo = $form->getData();
+            if (!empty($this->eventDispatcher)) {
+                $event = new UserCreatedDealEvent($user, $codePromo);
+                $this->eventDispatcher->dispatch($event);
+            }
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($codePromo);
             $manager->flush();
@@ -232,7 +253,6 @@ class DealController extends AbstractController
 
             $userRepository = $this->getDoctrine()->getRepository(Utilisateur::class);
             $user = $userRepository->find($userI);
-            $user->addDealsSaved($deal);
 
             if (!empty($this->eventDispatcher)) {
                 $event = new UserVotedEvent($user, $deal);
