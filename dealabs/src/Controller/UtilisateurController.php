@@ -114,7 +114,11 @@ class UtilisateurController extends AbstractController
             $noteDealHot = $dealRepository->getRateHottestDeal($user->getId());
             $moyNote = $dealRepository->getAverageRatesOneYear($user->getId());
             $nbDealsHot = $dealRepository->getHotDeals($user->getId());
-            $pourcent = $nbDealsHot/$nbDealsPostes*100;
+            if($nbDealsPostes > 0) {
+                $pourcent = $nbDealsHot / $nbDealsPostes * 100;
+            } else {
+                $pourcent = 0;
+            }
             return $this->render('user/statistiques.html.twig', [
                 'nbDealsPostes' => $nbDealsPostes,
                 'nbCommentairesPostes' => $nbCommentairesPostes,
