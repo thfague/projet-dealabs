@@ -215,4 +215,15 @@ class DealRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    public function findWeeklyDeals(){
+        $date = new \DateTime('- 1 week');
+        $queryBuilder = $this->createQueryBuilder('d');
+        $queryBuilder->select('d')
+            ->where('d.datePublication > :date')
+            ->setParameter('date', $date);
+
+        $queryBuilder =  $queryBuilder->getQuery()->getResult();
+        return $queryBuilder;
+    }
 }
