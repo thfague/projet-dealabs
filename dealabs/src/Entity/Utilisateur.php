@@ -53,11 +53,6 @@ class Utilisateur implements UserInterface
     private $dealsVote;
 
     /**
-     * @ORM\OneToMany(targetEntity=DealRate::class, mappedBy="utilisateur")
-     */
-    private $dealRates;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Deal::class, inversedBy="utilisateursSaved")
      * @JoinTable(name="utilisateur_dealsaved")
      */
@@ -88,7 +83,6 @@ class Utilisateur implements UserInterface
         $this->commentaires = new ArrayCollection();
         $this->dealsCreated = new ArrayCollection();
         $this->dealsVote = new ArrayCollection();
-        $this->dealRates = new ArrayCollection();
         $this->dealsSaved = new ArrayCollection();
         $this->userBadges = new ArrayCollection();
     }
@@ -222,18 +216,6 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
-    public function getDealRates(): ?DealRate
-    {
-        return $this->dealRates;
-    }
-
-    public function setDealRates(?DealRate $dealRates): self
-    {
-        $this->dealRates = $dealRates;
-
-        return $this;
-    }
-
     /**
      * Returns the roles granted to the user.
      *
@@ -284,29 +266,6 @@ class Utilisateur implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
-    }
-
-    public function addDealRate(DealRate $dealRate): self
-    {
-        if (!$this->dealRates->contains($dealRate)) {
-            $this->dealRates[] = $dealRate;
-            $dealRate->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDealRate(DealRate $dealRate): self
-    {
-        if ($this->dealRates->contains($dealRate)) {
-            $this->dealRates->removeElement($dealRate);
-            // set the owning side to null (unless already changed)
-            if ($dealRate->getUtilisateur() === $this) {
-                $dealRate->setUtilisateur(null);
-            }
-        }
-
-        return $this;
     }
 
     /**

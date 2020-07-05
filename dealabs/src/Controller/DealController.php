@@ -337,7 +337,7 @@ class DealController extends AbstractController
     }
 
     /**
-     * @Route("/deals/week", name="app_deals_week", methods={"GET"})
+     * @Route("/api/deals/week", name="app_deals_week", methods={"GET"})
      */
     public function weeklyDeals(DealRepository $dealRepository)
     {

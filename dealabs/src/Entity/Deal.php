@@ -73,11 +73,6 @@ class Deal
     private $dealsVote;
 
     /**
-     * @ORM\OneToMany(targetEntity=DealRate::class, mappedBy="deal")
-     */
-    private $dealRates;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
@@ -121,7 +116,6 @@ class Deal
     {
         $this->categories = new ArrayCollection();
         $this->dealsVote = new ArrayCollection();
-        $this->dealRates = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
         $this->utilisateursSaved = new ArrayCollection();
     }
@@ -262,41 +256,6 @@ class Deal
         if ($this->dealsVote->contains($dealsVote)) {
             $this->dealsVote->removeElement($dealsVote);
             $dealsVote->removeDealsVote($this);
-        }
-
-        return $this;
-    }
-
-    public function getDealRates(): ?DealRate
-    {
-        return $this->dealRates;
-    }
-
-    public function setDealRates(?DealRate $dealRates): self
-    {
-        $this->dealRates = $dealRates;
-
-        return $this;
-    }
-
-    public function addDealRate(DealRate $dealRate): self
-    {
-        if (!$this->dealRates->contains($dealRate)) {
-            $this->dealRates[] = $dealRate;
-            $dealRate->setDeal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDealRate(DealRate $dealRate): self
-    {
-        if ($this->dealRates->contains($dealRate)) {
-            $this->dealRates->removeElement($dealRate);
-            // set the owning side to null (unless already changed)
-            if ($dealRate->getDeal() === $this) {
-                $dealRate->setDeal(null);
-            }
         }
 
         return $this;
