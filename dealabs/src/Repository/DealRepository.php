@@ -124,8 +124,8 @@ class DealRepository extends ServiceEntityRepository
     public function searchByKeywords($criterias){
         $queryBuilder = $this->createQueryBuilder('d')
             ->where('d.nom LIKE :criterias')
-            ->where('d.description LIKE :criterias')
-            ->setParameter('criterias', $criterias);
+            ->orWhere('d.description LIKE :criterias')
+            ->setParameter('criterias', '%'.$criterias.'%');
         return $queryBuilder->getQuery()->getResult();
     }
 
