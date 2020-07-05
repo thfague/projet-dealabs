@@ -1,0 +1,31 @@
+{
+	"info": {
+		"_postman_id": "1d403e7f-c5ba-4d8c-8c14-82ed5a5c85f0",
+		"name": "Projet_FAGUE_BASSINET",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8000/api/deals/week",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/deals/week",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"deals",
+						"week"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
