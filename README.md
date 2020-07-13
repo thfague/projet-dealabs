@@ -11,7 +11,7 @@
 * cloner le projet dans le dossier wamp64/www
 
 
- ```git clone https://gitlab.iut-clermont.uca.fr/php-symfony-2019/dealabs-2020/bassinet-fague.git```
+ ```git clone https://github.com/thfague/projet-dealabs.git```
 
 * ouvrir un terminal dans le projet et aller dans le dossier dealabs.  
 * taper les commandes suivantes : 
